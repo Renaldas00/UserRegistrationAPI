@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using UserRegistration.BLL.Interfaces;
 using UserRegistration.BLL.Services;
+using UserRegistration.BLL.Services.Interfaces;
 
 namespace UserRegistration.BLL.Extensions
 {
@@ -8,8 +8,7 @@ namespace UserRegistration.BLL.Extensions
     {
         public static void AddBusinessLogic(this IServiceCollection services)
         {
-            services.AddTransient<IUserManagerService, UserManagerService>();
-            services.AddTransient<IJwtService, JwtService>();
+            services.AddTransient<IAccountService, AccountService>();
         }
     }
 }

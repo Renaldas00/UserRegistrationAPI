@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserRegistration.DAL.Entities
 {
@@ -14,5 +15,9 @@ namespace UserRegistration.DAL.Entities
         public int Size { get; set; }
         [Required]
         public byte[] Content { get; set; }
+        [ForeignKey(nameof(UserPhoto))]
+        [Required]
+        public int UserPhotoId { get; set; }
+        public UserDataList UserPhoto { get; set; }
     }
 }

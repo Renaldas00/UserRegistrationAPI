@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using UserRegistration.DAL.Interfaces;
 using UserRegistration.DAL.Repositories;
+using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.DAL.Extensions
 {
@@ -8,9 +8,10 @@ namespace UserRegistration.DAL.Extensions
     {
         public static void AddDatabaseServices(this IServiceCollection services)
         {
-            services.AddTransient<IPersonalDataListRepository, PersonalDataListRepository>();
-            services.AddTransient<ILocationListRepository, LocationListRepository>();
+            services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IPhotoListRepository, PhotoListRepository>();
+            services.AddTransient<ILocationListRepository, LocationListRepository>();
+            services.AddTransient<IPersonalDataListRepository, PersonalDataListRepository>();
         }
     }
 }

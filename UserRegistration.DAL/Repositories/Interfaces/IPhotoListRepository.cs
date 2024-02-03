@@ -1,6 +1,6 @@
 ﻿using UserRegistration.DAL.Entities;
 
-namespace UserRegistration.DAL.Interfaces
+namespace UserRegistration.DAL.Repositories.Interfaces
 {
     public interface IPhotoListRepository
     {

@@ -1,45 +1,120 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using UserRegistration.API.DTOS;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
+using UserRegistration.API.DTOS.Requests;
+using UserRegistration.API.Mappers.Interfaces;
 using UserRegistration.BLL.Interfaces;
+using UserRegistration.BLL.Services.Interfaces;
+using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class AccountsController : ControllerBase
     {
-        string role = "user";
-        private readonly IUserManagerService _userManagerService;
+        private readonly ILogger<AccountsController> _logger;
+        private readonly IAccountRepository _repository;
         private readonly IJwtService _jwtService;
+        private readonly IAccountMapper _mapper;
+        private readonly IAccountService _service;
 
-        public AccountController(IUserManagerService userManagerService, IJwtService jwtService)
+        public AccountsController(ILogger<AccountsController> logger,
+            IAccountRepository repository,
+            IJwtService jwtService,
+            IAccountMapper mapper,
+            IAccountService service)
         {
-            _userManagerService = userManagerService;
+            _logger = logger;
+            _repository = repository;
             _jwtService = jwtService;
+            _mapper = mapper;
+            _service = service;
         }
 
-        [HttpPost("Login")]
-        public IActionResult Login(SignInDTO dto)
-        {
-            var logiginSuccess = _userManagerService.TryLogin(dto.UserName, dto.Password, out role, out Guid? userId);
-            if (!logiginSuccess)
-            {
-                return BadRequest("Wrong username or password");
-            }
-            var token = _jwtService.GetJwtToken((Guid)userId, dto.UserName, role);
-
-            return Ok(token);
-        }
-
+        /// <summary>
+        ///  User Sign Up
+        /// </summary>
+        /// <param name="req">User Account Details</param>
+        /// <response code="201">User UUID</response>
+        /// <response code="400">Model validation error</response>
+        /// <response code="500">System error</response>
         [HttpPost("SignUp")]
-        public IActionResult Register(SignUpDTO dto)
+        [Produces(MediaTypeNames.Application.Json)]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult SignUp(SignUpDTO req)
         {
-            var user = _userManagerService.CreateAccount(dto.UserName, dto.Password, dto.Email);
-            if (user == null)
+            _logger.LogInformation($"Creating account for {req.UserName}");
+            var account = _mapper.Map(req);
+            var userId = _repository.Create(account);
+            _logger.LogInformation($"Account for {req.UserName} created with id {userId}");
+            return Created("", new { id = userId });
+        }
+
+
+        /// <summary>
+        ///  User Sign In
+        /// </summary>
+        /// <param name="req">User Account Details</param>
+        /// <response code="200">User JWT</response>
+        /// <response code="400">Model validation error</response>
+        /// <response code="500">System error</response>
+        [HttpPost("Login")]
+        [Produces(MediaTypeNames.Text.Plain)]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult Login(SignInDTO req)
+        {
+            _logger.LogInformation($"Login attempt for {req.UserName}");
+            var account = _repository.Get(req.UserName!);
+            if (account == null)
             {
-                return BadRequest("User already exists ");
+                _logger.LogWarning($"User {req.UserName} not found");
+                return BadRequest("User nor found");
             }
-            return Ok();
+
+            var isPasswordValid = _service.VerifyPasswordHash(req.Password, account.PasswordHash, account.PasswordSalt);
+
+            if (!isPasswordValid)
+            {
+                _logger.LogWarning($"Invalid password for {req.UserName}");
+                return BadRequest("Invalid username or password");
+            }
+            _logger.LogInformation($"User {req.UserName} successfully logged in");
+            var jwt = _jwtService.GetJwtToken(account);
+            return Ok(jwt);
+
+        }
+
+        /// <summary>
+        /// User Account Removal By Admin Only
+        /// </summary>
+        /// <param name="id">User Account ID To Be Removed</param>
+        /// <returns>No Content</returns>
+        /// <response code="204">User Remove Successfully</response>
+        /// <response code="404">Not Found error</response>
+        /// <response code="500">System error</response>
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Delete(Guid id)
+        {
+            _logger.LogInformation($"Deleting account {id}");
+            if (!_repository.Exists(id))
+            {
+                _logger.LogInformation($"Account {id} not found");
+                return NotFound();
+            }
+            _repository.Delete(id);
+            return NoContent();
         }
     }
 }

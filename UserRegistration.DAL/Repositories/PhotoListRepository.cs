@@ -1,5 +1,5 @@
 ﻿using UserRegistration.DAL.Entities;
-using UserRegistration.DAL.Interfaces;
+using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.DAL.Repositories
 {
@@ -9,6 +9,7 @@ namespace UserRegistration.DAL.Repositories
 
         public PhotoListRepository(AppDbContext appDbContext)
         {
+            _appDbContext.Database.EnsureCreated();
             _appDbContext = appDbContext;
         }
 

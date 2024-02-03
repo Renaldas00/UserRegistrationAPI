@@ -1,5 +1,5 @@
 ﻿using UserRegistration.DAL.Entities;
-using UserRegistration.DAL.Interfaces;
+using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.DAL.Repositories
 {
@@ -9,20 +9,21 @@ namespace UserRegistration.DAL.Repositories
 
         public PersonalDataListRepository(AppDbContext appDbContext)
         {
+            _appDbContext.Database.EnsureCreated();
             _appDbContext = appDbContext;
         }
 
-        public int CreatePersonalDataList(PersonalDataList PersonalDataList)
+        public int CreatePersonalDataList(UserDataList PersonalDataList)
         {
             throw new NotImplementedException();
         }
 
-        public PersonalDataList GetPersonalDataList(int Id)
+        public UserDataList GetPersonalDataList(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public List<PersonalDataList> GetPersonalDataListByUserId(int UserId)
+        public List<UserDataList> GetPersonalDataListByUserId(Guid UserId)
         {
             throw new NotImplementedException();
         }
@@ -30,7 +31,7 @@ namespace UserRegistration.DAL.Repositories
         {
             throw new NotImplementedException();
         }
-        public void UpdatePersonalDataList(PersonalDataList PersonalDataList)
+        public void UpdatePersonalDataList(UserDataList PersonalDataList)
         {
             throw new NotImplementedException();
         }

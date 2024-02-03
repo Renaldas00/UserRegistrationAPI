@@ -4,7 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using UserRegistration.API.Mappers;
+using UserRegistration.API.Mappers.Interfaces;
 using UserRegistration.BLL.Extensions;
+using UserRegistration.BLL.Interfaces;
+using UserRegistration.BLL.Services;
 using UserRegistration.DAL.Extensions;
 
 namespace UserRegistration.API
@@ -15,6 +19,8 @@ namespace UserRegistration.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddTransient<IJwtService, JwtService>();
+            builder.Services.AddTransient<IAccountMapper, AccountMapper>();
             builder.Services.AddDatabaseServices();
             builder.Services.AddBusinessLogic();
             builder.Services.AddHttpContextAccessor();
@@ -42,8 +48,8 @@ namespace UserRegistration.API
                 opt.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Notes",
-                    Description = "An ASP.NET Core Web API for creating notes",
+                    Title = "User Registration",
+                    Description = "An ASP.NET Core Web API for creating user profiles",
                 });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -71,7 +77,7 @@ namespace UserRegistration.API
             builder.Services.AddDbContext<DAL.AppDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Database"),
-                    b => b.MigrationsAssembly("MockProgram.API"));
+                    b => b.MigrationsAssembly("UserRegistration.API"));
             });
 
             var app = builder.Build();

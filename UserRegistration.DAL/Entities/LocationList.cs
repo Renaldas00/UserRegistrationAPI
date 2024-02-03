@@ -7,14 +7,14 @@ namespace UserRegistration.DAL.Entities
     {
         [Key]
         public int Id { get; set; }
-        public string Country { get; set; }
-        public string? City { get; set; }
-        public string? Street { get; set; }
-        public string? HouseNumber { get; set; }
-        public string? ApartmentNumber { get; set; }
+        public string Country { get; set; } = string.Empty;
+        public string? City { get; set; } = string.Empty;
+        public string? Street { get; set; } = string.Empty;
+        public string? HouseNumber { get; set; } = string.Empty;
+        public string? ApartmentNumber { get; set; } = string.Empty;
+        [ForeignKey(nameof(UserLocation))]
         [Required]
-        public int PersonalDataListId { get; set; }
-        [ForeignKey("PersonalDataListId")]
-        public PersonalDataList PersonalDataList { get; set; }
+        public int UserLocationId { get; set; }
+        public UserDataList UserLocation { get; set; } = null!;
     }
 }

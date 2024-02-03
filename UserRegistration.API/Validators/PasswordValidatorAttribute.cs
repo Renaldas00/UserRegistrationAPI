@@ -1,0 +1,61 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace UserRegistration.API.Validators
+{
+    public class PasswordValidatorAttribute : ValidationAttribute
+    {
+        public int MinimumLength { get; set; } = 4;
+        public int MaximumLength { get; set; } = 24;
+        public bool RequireUppercase { get; set; } = true;
+        public bool RequireLowercase { get; set; } = true;
+        public bool RequireDigit { get; set; } = true;
+        public bool RequireSpecialCharacter { get; set; } = true;
+
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value == null || string.IsNullOrEmpty(value.ToString()))
+            {
+                return new ValidationResult("Password is required.");
+            }
+
+            var password = value.ToString();
+
+            if (string.IsNullOrEmpty(password))
+            {
+                return new ValidationResult("Password is required.");
+            }
+
+            if (password.Length < MinimumLength)
+            {
+                return new ValidationResult($"Password must be at least {MinimumLength} characters long.");
+            }
+
+            if (password.Length > MaximumLength)
+            {
+                return new ValidationResult($"Password must be less than {MaximumLength} characters long.");
+            }
+
+            if (RequireUppercase && !password.Any(char.IsUpper))
+            {
+                return new ValidationResult("Password must contain at least one uppercase letter.");
+            }
+
+            if (RequireLowercase && !password.Any(char.IsLower))
+            {
+                return new ValidationResult("Password must contain at least one lowercase letter.");
+            }
+
+            if (RequireDigit && !password.Any(char.IsDigit))
+            {
+                return new ValidationResult("Password must contain at least one digit.");
+            }
+
+            if (RequireSpecialCharacter && password.All(char.IsLetterOrDigit))
+            {
+                return new ValidationResult("Password must contain at least one special character.");
+            }
+
+            return ValidationResult.Success;
+        }
+    }
+}
