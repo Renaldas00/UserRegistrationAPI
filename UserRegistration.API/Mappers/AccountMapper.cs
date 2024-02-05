@@ -18,7 +18,6 @@ namespace UserRegistration.API.Mappers
             return new Account
             {
                 UserName = dto.UserName!,
-                Email = dto.Email!,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Role = dto.Role!

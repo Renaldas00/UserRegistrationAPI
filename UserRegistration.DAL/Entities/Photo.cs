@@ -19,5 +19,7 @@ namespace UserRegistration.DAL.Entities
         [Required]
         public int UserPhotoId { get; set; }
         public UserDataList UserPhoto { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using UserRegistration.DAL.Entities;
 
-namespace UserRegistration.DAL.Entities
+namespace UserRegistration.API.DTOS.Requests
 {
-    public class UserDataList
+    public class UserDataListRequestDTO
     {
-        [Key]
         public int Id { get; set; }
         [Required]
         public string FirstName { get; set; }
@@ -21,11 +20,10 @@ namespace UserRegistration.DAL.Entities
         public LocationList Location { get; set; }
         public Photo Photo { get; set; }
 
-        [ForeignKey(nameof(Account))]
         [Required]
         public Guid AccountId { get; set; }
         public Account Account { get; set; } = null!;
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime CreatedAt { get; internal set; }
+        public DateTime UpdatedAt { get; internal set; }
     }
 }

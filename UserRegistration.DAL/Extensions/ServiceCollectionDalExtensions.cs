@@ -11,7 +11,7 @@ namespace UserRegistration.DAL.Extensions
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IPhotoListRepository, PhotoListRepository>();
             services.AddTransient<ILocationListRepository, LocationListRepository>();
-            services.AddTransient<IPersonalDataListRepository, PersonalDataListRepository>();
+            services.AddTransient<IUserDataListRepository, UserDataListRepository>();
         }
     }
 }

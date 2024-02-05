@@ -62,7 +62,6 @@ namespace UserRegistration.BLL.Services
                 new (ClaimTypes.NameIdentifier, account.Id.ToString()),
                 new (ClaimTypes.Name, account.UserName.ToString()),
                 new (ClaimTypes.Role, account.Role),
-                new (ClaimTypes.Email, account.Email)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),

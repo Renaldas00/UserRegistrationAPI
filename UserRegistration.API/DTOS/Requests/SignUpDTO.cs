@@ -12,12 +12,6 @@ namespace UserRegistration.API.DTOS.Requests
         [UserNameValidator]
         public string UserName { get; set; }
         /// <summary>
-        /// Email Of The Account
-        /// </summary>
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-        /// <summary>
         /// Password Of The Account
         /// </summary>
         [Required]
