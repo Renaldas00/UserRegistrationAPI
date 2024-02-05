@@ -19,6 +19,16 @@ namespace UserRegistration.DAL.Repositories.Interfaces
         /// Deletes Photo From Database
         /// </summary>
         /// <param name="Id">Photo ID To Be Deleted</param>
-        void DeletePhoto(int Id);
+        /// <summary>
+        /// Retrieves User Data List From Database
+        /// </summary>
+        /// <param name="id">User Data List ID</param>
+        /// <returns>User Data List From Database</returns>
+        Photo GetUserPhoto(int id);
+        /// <summary>
+        /// Deletes User Photo
+        /// </summary>
+        /// <param name="Photo">Photo To Delete</param>
+        void DeletePhoto(Photo Photo);
     }
 }

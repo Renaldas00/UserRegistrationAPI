@@ -27,5 +27,8 @@ namespace UserRegistration.DAL.Entities
         public Account Account { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        public List<Photo> Photos { get; set; }
+        public List<LocationList> locations { get; set; }
     }
 }

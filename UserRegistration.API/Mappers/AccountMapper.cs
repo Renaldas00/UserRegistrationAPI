@@ -12,7 +12,7 @@ namespace UserRegistration.API.Mappers
         {
             _service = service;
         }
-        public Account Map(SignUpDTO dto)
+        public Account Map(SignUpRequestDTO dto)
         {
             _service.CreatePasswordHash(dto.Password!, out var passwordHash, out var passwordSalt);
             return new Account

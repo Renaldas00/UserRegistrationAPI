@@ -10,6 +10,6 @@ namespace UserRegistration.API.Mappers.Interfaces
         /// </summary>
         /// <param name="dto">Sign Up Data</param>
         /// <returns></returns>
-        Account Map(SignUpDTO dto);
+        Account Map(SignUpRequestDTO dto);
     }
 }

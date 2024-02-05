@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using UserRegistration.API.DTOS.Requests;
+using UserRegistration.API.DTOS.Responses;
 using UserRegistration.API.Mappers.Interfaces;
 using UserRegistration.DAL.Entities;
 
@@ -13,22 +14,20 @@ namespace UserRegistration.API.Mappers
             accountId = new Guid(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         }
 
-        public UserDataListRequestDTO Map(UserDataList entity)
+        public UserDataListResultDTO Map(UserDataList entity)
         {
-            return new UserDataListRequestDTO
+            return new UserDataListResultDTO
             {
-                Id = entity.Id,
                 FirstName = entity.FirstName,
                 LastName = entity.LastName,
                 SocialSecurityCode = entity.SocialSecurityCode,
                 EmailAddres = entity.EmailAddres,
                 PhoneNumber = entity.PhoneNumber,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
             };
         }
 
-        public List<UserDataListRequestDTO> Map(IEnumerable<UserDataList> entities)
+        public List<UserDataListResultDTO> Map(IEnumerable<UserDataList> entities)
         {
             return entities.Select(x => Map(x)).ToList();
         }
@@ -38,7 +37,6 @@ namespace UserRegistration.API.Mappers
             return new UserDataList
             {
 
-                Id = dto.Id,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 SocialSecurityCode = dto.SocialSecurityCode,
@@ -46,17 +44,37 @@ namespace UserRegistration.API.Mappers
                 PhoneNumber = dto.PhoneNumber,
                 AccountId = accountId,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
             };
         }
 
-        public void ProjectTo(UserDataListRequestDTO from, UserDataList to)
+        public void ProjectTo(UpdateFirstNameUserDataListRequestDTO from, UserDataList to)
         {
             to.FirstName = from.FirstName!;
+            to.UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void ProjectTo(UpdateLastNameUserDataListRequestDTO from, UserDataList to)
+        {
             to.LastName = from.LastName!;
-            to.SocialSecurityCode = from.SocialSecurityCode;
-            to.EmailAddres = from.EmailAddres;
-            to.PhoneNumber = from.PhoneNumber;
+            to.UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void ProjectTo(UpdateEmailAddressUserDataListRequestDTO from, UserDataList to)
+        {
+            to.EmailAddres = from.EmailAdress!;
+            to.UpdatedAt = DateTime.UtcNow; ;
+        }
+
+        public void ProjectTo(UpdateSocSecCodeUserDataListRequestDTO from, UserDataList to)
+        {
+            to.SocialSecurityCode = from.SocialSecurityCode!;
+            to.UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void ProjectTo(UpdatePhoneNumberUserDataListRequestDTO from, UserDataList to)
+        {
+            to.PhoneNumber = from.PhoneNumber!;
+            to.UpdatedAt = DateTime.UtcNow;
         }
     }
 }

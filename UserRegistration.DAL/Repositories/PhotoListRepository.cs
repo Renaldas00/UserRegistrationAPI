@@ -1,4 +1,5 @@
-﻿using UserRegistration.DAL.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using UserRegistration.DAL.Entities;
 using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.DAL.Repositories
@@ -9,21 +10,29 @@ namespace UserRegistration.DAL.Repositories
 
         public PhotoListRepository(AppDbContext appDbContext)
         {
-            _appDbContext.Database.EnsureCreated();
             _appDbContext = appDbContext;
         }
 
-        public int AddPhoto(Photo Photo)
+        public int AddPhoto(Photo photo)
         {
-            throw new NotImplementedException();
+            _appDbContext.Photo.Add(photo);
+            _appDbContext.SaveChanges();
+            return photo.Id;
         }
-        public void UpdatePhoto(Photo Photo)
+        public void UpdatePhoto(Photo photo)
         {
-            throw new NotImplementedException();
+            _appDbContext.Photo.Update(photo);
+            _appDbContext.SaveChanges();
         }
-        public void DeletePhoto(int Id)
+        public void DeletePhoto(Photo photo)
         {
-            throw new NotImplementedException();
+            _appDbContext.Photo.Remove(photo);
+            _appDbContext.SaveChanges();
+        }
+
+        public Photo GetUserPhoto(int id)
+        {
+            return _appDbContext.Photo.FirstOrDefault(i => i.Id == id);
         }
     }
 }

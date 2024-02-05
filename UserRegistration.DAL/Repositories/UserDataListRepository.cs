@@ -1,4 +1,5 @@
-﻿using UserRegistration.DAL.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using UserRegistration.DAL.Entities;
 using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.DAL.Repositories
@@ -9,7 +10,6 @@ namespace UserRegistration.DAL.Repositories
 
         public UserDataListRepository(AppDbContext appDbContext)
         {
-            _appDbContext.Database.EnsureCreated();
             _appDbContext = appDbContext;
         }
 
@@ -20,22 +20,21 @@ namespace UserRegistration.DAL.Repositories
             return userDataList.Id;
         }
 
-        public UserDataList GetUserDataList(int Id)
+        public UserDataList GetUserDataList(int id)
         {
-            throw new NotImplementedException();
-        }
+            //.Include(i => i.Photos).Include(l => l.locations)
+            return _appDbContext.UserDataList.FirstOrDefault(i => i.Id == id);
 
-        public List<UserDataList> GetUserDataListByUserId(Guid UserId)
-        {
-            throw new NotImplementedException();
         }
-        public void DeleteUserDataList(int Id)
+        public void DeleteUserDataList(UserDataList userDataList)
         {
-            throw new NotImplementedException();
+            _appDbContext.UserDataList.Remove(userDataList);
+            _appDbContext.SaveChanges();
         }
-        public void UpdateUserDataList(UserDataList UserDataList)
+        public void UpdateUserDataList(UserDataList userDataList)
         {
-            throw new NotImplementedException();
+            _appDbContext.UserDataList.Update(userDataList);
+            _appDbContext.SaveChanges();
         }
     }
 }

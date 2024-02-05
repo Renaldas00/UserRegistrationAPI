@@ -28,8 +28,4 @@
 		<ProjectReference Include="..\UserRegistration.DAL\UserRegistration.DAL.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="DTOS\Responses\" />
-	</ItemGroup>
-
 </Project>

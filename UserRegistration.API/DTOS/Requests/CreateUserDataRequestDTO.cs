@@ -35,5 +35,8 @@ namespace UserRegistration.API.DTOS.Requests
         [Required]
         [EmailAddress]
         public string EmailAddres { get; set; }
+
+        public DateTime CreatedAt { get; internal set; }
+        public DateTime UpdatedAt { get; internal set; }
     }
 }

@@ -17,12 +17,6 @@ namespace UserRegistration.DAL.Repositories.Interfaces
         /// <returns>User Data List From Database</returns>
         UserDataList GetUserDataList(int id);
         /// <summary>
-        /// Retrieves User Data List By UUID
-        /// </summary>
-        /// <param name="userId">User UUID To Retrieve</param>
-        /// <returns>Returns List Of User Data From Database</returns>
-        List<UserDataList> GetUserDataListByUserId(Guid userId);
-        /// <summary>
         /// Updates User Data List In Database
         /// </summary>
         /// <param name="userDatalist">User Data List That Needs To Be Updated</param>
@@ -31,6 +25,6 @@ namespace UserRegistration.DAL.Repositories.Interfaces
         /// Deletes User Data List And All Of Its Associated Items Thru The Foreign Key From The Database
         /// </summary>
         /// <param name="id">User Data List ID</param>
-        void DeleteUserDataList(int id);
+        void DeleteUserDataList(UserDataList userDataList);
     }
 }

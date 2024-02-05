@@ -21,6 +21,8 @@ namespace UserRegistration.API
 
             builder.Services.AddTransient<IJwtService, JwtService>();
             builder.Services.AddTransient<IAccountMapper, AccountMapper>();
+            builder.Services.AddTransient<IUserDataListMapper, UserDataListMapper>();
+            builder.Services.AddTransient<IPhotoMapper, PhotoMapper>();
             builder.Services.AddDatabaseServices();
             builder.Services.AddBusinessLogic();
             builder.Services.AddHttpContextAccessor();

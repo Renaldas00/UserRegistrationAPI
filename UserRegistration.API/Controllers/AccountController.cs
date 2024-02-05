@@ -40,13 +40,13 @@ namespace UserRegistration.API.Controllers
         /// <response code="201">User UUID</response>
         /// <response code="400">Model validation error</response>
         /// <response code="500">System error</response>
-        [HttpPost("SignUp")]
+        [HttpPost("signup")]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult SignUp(SignUpDTO req)
+        public ActionResult SignUp(SignUpRequestDTO req)
         {
             _logger.LogInformation($"Creating account for {req.UserName}");
             var account = _mapper.Map(req);
@@ -63,7 +63,7 @@ namespace UserRegistration.API.Controllers
         /// <response code="200">User JWT</response>
         /// <response code="400">Model validation error</response>
         /// <response code="500">System error</response>
-        [HttpPost("Login")]
+        [HttpPost("signin")]
         [Produces(MediaTypeNames.Text.Plain)]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
