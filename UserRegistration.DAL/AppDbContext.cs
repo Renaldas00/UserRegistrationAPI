@@ -23,16 +23,16 @@ namespace UserRegistration.DAL
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<UserDataList>()
-                .HasOne(ud => ud.Photo)
-                .WithOne(p => p.UserPhoto)
-                .HasForeignKey<Photo>(p => p.UserPhotoId)
+            modelBuilder.Entity<Photo>()
+                .HasOne(ud => ud.UserDataListItem)
+                .WithOne(p => p.Photo)
+                .HasForeignKey<Photo>(p => p.UserDataListItemId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<UserDataList>()
-                .HasOne(ud => ud.Location)
-                .WithOne(l => l.UserLocation)
+            modelBuilder.Entity<LocationList>()
+                .HasOne(ud => ud.UserLocation)
+                .WithOne(l => l.Location)
                 .HasForeignKey<LocationList>(l => l.UserLocationId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);

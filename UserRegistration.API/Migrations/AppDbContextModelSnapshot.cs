@@ -108,10 +108,6 @@ namespace UserRegistration.API.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -125,12 +121,12 @@ namespace UserRegistration.API.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserPhotoId")
+                    b.Property<int>("UserDataListItemId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserPhotoId")
+                    b.HasIndex("UserDataListItemId")
                         .IsUnique();
 
                     b.ToTable("Photo");
@@ -194,13 +190,13 @@ namespace UserRegistration.API.Migrations
 
             modelBuilder.Entity("UserRegistration.DAL.Entities.Photo", b =>
                 {
-                    b.HasOne("UserRegistration.DAL.Entities.UserDataList", "UserPhoto")
+                    b.HasOne("UserRegistration.DAL.Entities.UserDataList", "UserDataListItem")
                         .WithOne("Photo")
-                        .HasForeignKey("UserRegistration.DAL.Entities.Photo", "UserPhotoId")
+                        .HasForeignKey("UserRegistration.DAL.Entities.Photo", "UserDataListItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserPhoto");
+                    b.Navigation("UserDataListItem");
                 });
 
             modelBuilder.Entity("UserRegistration.DAL.Entities.UserDataList", b =>

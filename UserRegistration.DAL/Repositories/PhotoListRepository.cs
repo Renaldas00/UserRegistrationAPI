@@ -32,7 +32,7 @@ namespace UserRegistration.DAL.Repositories
 
         public Photo GetUserPhoto(int id)
         {
-            return _appDbContext.Photo.FirstOrDefault(i => i.Id == id);
+            return _appDbContext.Photo.Include(i => i.UserDataListItem).FirstOrDefault(i => i.Id == id);
         }
     }
 }

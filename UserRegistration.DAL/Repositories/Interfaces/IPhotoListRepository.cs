@@ -7,14 +7,14 @@ namespace UserRegistration.DAL.Repositories.Interfaces
         /// <summary>
         /// Inserts Photo Into Database
         /// </summary>
-        /// <param name="Photo">Photo Data Which Needs To Be Inserted</param>
+        /// <param name="photo">Photo Data Which Needs To Be Inserted</param>
         /// <returns>Photo List ID</returns>
-        int AddPhoto(Photo Photo);
+        int AddPhoto(Photo photo);
         /// <summary>
         /// Updates Photo From Database
         /// </summary>
-        /// <param name="Photo">Photo Data To Be Updated</param>
-        void UpdatePhoto(Photo Photo);
+        /// <param name="photo">Photo Data To Be Updated</param>
+        void UpdatePhoto(Photo photo);
         /// <summary>
         /// Deletes Photo From Database
         /// </summary>
@@ -28,7 +28,7 @@ namespace UserRegistration.DAL.Repositories.Interfaces
         /// <summary>
         /// Deletes User Photo
         /// </summary>
-        /// <param name="Photo">Photo To Delete</param>
-        void DeletePhoto(Photo Photo);
+        /// <param name="photo">Photo To Delete</param>
+        void DeletePhoto(Photo photo);
     }
 }

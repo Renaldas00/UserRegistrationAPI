@@ -10,15 +10,14 @@ namespace UserRegistration.DAL.Entities
         [Required]
         public string ImageName { get; set; }
         [Required]
-        public string ContentType { get; set; }
-        //[Required]
-        public int Size { get; set; } 
-        //[Required]
-        public byte[] Content { get; set; } = new byte[0];
-        [ForeignKey(nameof(UserPhoto))]
+        public int Size { get; set; }
         [Required]
-        public int UserPhotoId { get; set; }
-        public UserDataList UserPhoto { get; set; }
+        public byte[] Content { get; set; }
+
+        [ForeignKey(nameof(UserDataListItem))]
+        [Required]
+        public int UserDataListItemId { get; set; }
+        public UserDataList UserDataListItem { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

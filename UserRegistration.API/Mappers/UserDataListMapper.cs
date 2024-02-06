@@ -24,6 +24,7 @@ namespace UserRegistration.API.Mappers
                 EmailAddres = entity.EmailAddres,
                 PhoneNumber = entity.PhoneNumber,
                 CreatedAt = DateTime.UtcNow,
+                PhotoContent =  entity.Photo.Content 
             };
         }
 
@@ -44,6 +45,7 @@ namespace UserRegistration.API.Mappers
                 PhoneNumber = dto.PhoneNumber,
                 AccountId = accountId,
                 CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
         }
 
@@ -62,7 +64,7 @@ namespace UserRegistration.API.Mappers
         public void ProjectTo(UpdateEmailAddressUserDataListRequestDTO from, UserDataList to)
         {
             to.EmailAddres = from.EmailAdress!;
-            to.UpdatedAt = DateTime.UtcNow; ;
+            to.UpdatedAt = DateTime.UtcNow;
         }
 
         public void ProjectTo(UpdateSocSecCodeUserDataListRequestDTO from, UserDataList to)

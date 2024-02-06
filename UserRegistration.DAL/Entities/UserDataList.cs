@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace UserRegistration.DAL.Entities
 {
@@ -27,8 +28,5 @@ namespace UserRegistration.DAL.Entities
         public Account Account { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-
-        public List<Photo> Photos { get; set; }
-        public List<LocationList> locations { get; set; }
     }
 }

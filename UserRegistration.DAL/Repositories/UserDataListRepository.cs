@@ -22,8 +22,7 @@ namespace UserRegistration.DAL.Repositories
 
         public UserDataList GetUserDataList(int id)
         {
-            //.Include(i => i.Photos).Include(l => l.locations)
-            return _appDbContext.UserDataList.FirstOrDefault(i => i.Id == id);
+            return _appDbContext.UserDataList.Include(i => i.Photo).FirstOrDefault(i => i.Id == id);
 
         }
         public void DeleteUserDataList(UserDataList userDataList)

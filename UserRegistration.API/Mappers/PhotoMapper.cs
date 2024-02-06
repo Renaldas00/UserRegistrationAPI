@@ -24,19 +24,30 @@ namespace UserRegistration.API.Mappers
 
         public Photo Map(UploadImageRequestDTO dto, int todoItemId)
         {
-            //using var stream = new MemoryStream();
-            //dto.Image.CopyTo(stream);
-            //var imageBytes = stream.ToArray();
+            using var stream = new MemoryStream();
+            dto.Image.CopyTo(stream);
+            var imageBytes = stream.ToArray();
             return new Photo
             {
                 ImageName = dto.ImageName!,
-                UserPhotoId = todoItemId,
-                //Content = imageBytes,
-                Content = dto.Content,
-                Size = dto.Size
+                UserDataListItemId = todoItemId,
+                Content = imageBytes,
+                Size = imageBytes.Length,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+
             };
         }
 
-      
+        public void ProjectTo(UpdateImageRequestDTO from, Photo to)
+        {
+            using var stream = new MemoryStream();
+            from.Image.CopyTo(stream);
+            var imageBytes = stream.ToArray();
+
+            to.ImageName = from.ImageName!;
+            to.Content = imageBytes;
+            to.UpdatedAt = DateTime.UtcNow; ;
+        }
     }
 }

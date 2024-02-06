@@ -8,5 +8,7 @@ namespace UserRegistration.API.Mappers.Interfaces
     {
         Photo Map(UploadImageRequestDTO dto, int todoItemId);
         List<ImageResultDTO> Map(IEnumerable<Photo> entities);
+
+        void ProjectTo(UpdateImageRequestDTO from, Photo to);
     }
 }

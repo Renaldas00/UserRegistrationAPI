@@ -87,10 +87,9 @@ namespace UserRegistration.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Size = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    UserPhotoId = table.Column<int>(type: "int", nullable: false),
+                    UserDataListItemId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -98,8 +97,8 @@ namespace UserRegistration.API.Migrations
                 {
                     table.PrimaryKey("PK_Photo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photo_UserDataList_UserPhotoId",
-                        column: x => x.UserPhotoId,
+                        name: "FK_Photo_UserDataList_UserDataListItemId",
+                        column: x => x.UserDataListItemId,
                         principalTable: "UserDataList",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -112,9 +111,9 @@ namespace UserRegistration.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photo_UserPhotoId",
+                name: "IX_Photo_UserDataListItemId",
                 table: "Photo",
-                column: "UserPhotoId",
+                column: "UserDataListItemId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
