@@ -14,18 +14,18 @@ namespace UserRegistration.API.Controllers
     [Authorize]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class UserDataController : ControllerBase
+    public class LocationController : ControllerBase
     {
-        private readonly ILogger<UserDataController> _logger;
-        private readonly IUserDataRepository _repository;
-        private readonly IUserDataMapper _mapper;
+        private readonly ILogger<LocationController> _logger;
+        private readonly ILocationRepository _repository;
+        private readonly ILocationMapper _mapper;
         private readonly Guid _userId;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserDataController(ILogger<UserDataController> logger,
-            IUserDataRepository repository,
+        public LocationController(ILogger<LocationController> logger,
+            ILocationRepository repository,
             IHttpContextAccessor httpContextAccessor,
-            IUserDataMapper mapper)
+            ILocationMapper mapper)
         {
             _logger = logger;
             _repository = repository;
@@ -40,13 +40,13 @@ namespace UserRegistration.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(UserDataListResultDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(LocationResultDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(MediaTypeNames.Application.Json)]
         public IActionResult Get(int id)
         {
             _logger.LogInformation($"Getting user data with id {id} for user {_userId}");
-            var entity = _repository.Get(id);
+            var entity = _repository.GetLocationListById(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data with id {id} for user {_userId} not found");
@@ -66,11 +66,11 @@ namespace UserRegistration.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
-        public IActionResult Post(UserDataListRequestDTO req)
+        public IActionResult Post(LocationItemRequestDTO req, int id)
         {
-            _logger.LogInformation($"Creating user data list for user {_userId} with Title {req.FirstName}");
-            var entity = _mapper.Map(req);
-            _repository.Create(entity);
+            _logger.LogInformation($"Creating user data list for user {_userId} with Title {req.Country}");
+            var entity = _mapper.Map(req, id);
+            _repository.CreateLocationList(entity);
 
             return Ok(entity);
         }
@@ -81,23 +81,23 @@ namespace UserRegistration.API.Controllers
         /// <param name="id"></param>
         /// <param name="req"></param>
         /// <returns></returns>
-        [HttpPut("firstname/{id}")]
+        [HttpPut("country/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
-        public IActionResult Put(int id, UpdateFirstNameRequestDTO req)
+        public IActionResult Put(int id, UpdateCountryRequestDTO req)
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _repository.Get(id);
+            var entity = _repository.GetLocationListById(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
                 return NotFound();
             }
-            if (entity.AccountId != _userId)
+            if (entity.UserLocation.AccountId != _userId)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
                 return Forbid();
@@ -105,7 +105,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _repository.Update(entity);
+            _repository.UpdateLocationList(entity);
             return NoContent();
         }
         /// <summary>
@@ -114,23 +114,23 @@ namespace UserRegistration.API.Controllers
         /// <param name="id"></param>
         /// <param name="req"></param>
         /// <returns></returns>
-        [HttpPut("lastname/{id}")]
+        [HttpPut("city/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
-        public IActionResult Put(int id, UpdateLastNameRequestDTO req)
+        public IActionResult Put(int id, UpdateCityRequestDTO req)
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _repository.Get(id);
+            var entity = _repository.GetLocationListById(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
                 return NotFound();
             }
-            if (entity.AccountId != _userId)
+            if (entity.UserLocation.AccountId != _userId)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
                 return Forbid();
@@ -138,7 +138,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _repository.Update(entity);
+            _repository.UpdateLocationList(entity);
             return NoContent();
         }
         /// <summary>
@@ -147,23 +147,23 @@ namespace UserRegistration.API.Controllers
         /// <param name="id"></param>
         /// <param name="req"></param>
         /// <returns></returns>
-        [HttpPut("emailaddress/{id}")]
+        [HttpPut("street/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
-        public IActionResult Put(int id, UpdateEmailAddresRequestDTO req)
+        public IActionResult Put(int id, UpdateStreetRequestDTO req)
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _repository.Get(id);
+            var entity = _repository.GetLocationListById(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
                 return NotFound();
             }
-            if (entity.AccountId != _userId)
+            if (entity.UserLocation.AccountId != _userId)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
                 return Forbid();
@@ -171,7 +171,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _repository.Update(entity);
+            _repository.UpdateLocationList(entity);
             return NoContent();
         }
         /// <summary>
@@ -180,23 +180,23 @@ namespace UserRegistration.API.Controllers
         /// <param name="id"></param>
         /// <param name="req"></param>
         /// <returns></returns>
-        [HttpPut("socialsecuritycode/{id}")]
+        [HttpPut("housenumber/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
-        public IActionResult Put(int id, UpdateSocSecCodeRequestDTO req)
+        public IActionResult Put(int id, UpdateHouseNumberRequestDTO req)
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _repository.Get(id);
+            var entity = _repository.GetLocationListById(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
                 return NotFound();
             }
-            if (entity.AccountId != _userId)
+            if (entity.UserLocation.AccountId != _userId)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
                 return Forbid();
@@ -204,7 +204,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _repository.Update(entity);
+            _repository.UpdateLocationList(entity);
             return NoContent();
         }
         /// <summary>
@@ -213,23 +213,23 @@ namespace UserRegistration.API.Controllers
         /// <param name="id"></param>
         /// <param name="req"></param>
         /// <returns></returns>
-        [HttpPut("phonenumber/{id}")]
+        [HttpPut("apartmentnumber/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
-        public IActionResult Put(int id, UpdatePhoneNumberRequestDTO req)
+        public IActionResult Put(int id, UpdateApartmentNumberRequestDTO req)
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _repository.Get(id);
+            var entity = _repository.GetLocationListById(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
                 return NotFound();
             }
-            if (entity.AccountId != _userId)
+            if (entity.UserLocation.AccountId != _userId)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
                 return Forbid();
@@ -237,7 +237,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _repository.Update(entity);
+            _repository.UpdateLocationList(entity);
             return NoContent();
         }
 
@@ -254,18 +254,18 @@ namespace UserRegistration.API.Controllers
         public IActionResult Delete(int id)
         {
             _logger.LogInformation($"Deleting todo with id {id} for user {_userId}");
-            var entity = _repository.Get(id);
+            var entity = _repository.GetLocationListById(id);
             if (entity == null)
             {
                 _logger.LogInformation($"Todo with id {id} for user {_userId} not found");
                 return NotFound();
             }
-            if (entity.AccountId != _userId)
+            if (entity.UserLocation.AccountId != _userId)
             {
                 _logger.LogInformation($"Todo with id {id} for user {_userId} is forbidden");
                 return Forbid();
             }
-            _repository.Delete(entity);
+            _repository.DeleteLocationList(entity);
             return NoContent();
         }
     }

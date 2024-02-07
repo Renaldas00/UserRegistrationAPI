@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using UserRegistration.API.Validators;
 
 namespace UserRegistration.API.DTOS.Requests
 {
-    public class UpdateEmailAddressUserDataListRequestDTO
+    public class UpdateFirstNameRequestDTO
     {
         [Required]
-        [EmailAddress]
-        public string EmailAdress { get; set; }
+        [FirstNameValidator]
+        public string FirstName {  get; set; }
 
         public DateTime UpdatedAt { get; internal set; }
     }

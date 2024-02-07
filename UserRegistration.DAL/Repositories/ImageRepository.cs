@@ -4,35 +4,35 @@ using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.DAL.Repositories
 {
-    public class PhotoListRepository : IPhotoListRepository
+    public class ImageRepository : IImageRepository
     {
         private readonly AppDbContext _appDbContext;
 
-        public PhotoListRepository(AppDbContext appDbContext)
+        public ImageRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
 
-        public int AddPhoto(Photo photo)
+        public int AddPhoto(Image photo)
         {
-            _appDbContext.Photo.Add(photo);
+            _appDbContext.Image.Add(photo);
             _appDbContext.SaveChanges();
             return photo.Id;
         }
-        public void UpdatePhoto(Photo photo)
+        public void UpdatePhoto(Image photo)
         {
-            _appDbContext.Photo.Update(photo);
+            _appDbContext.Image.Update(photo);
             _appDbContext.SaveChanges();
         }
-        public void DeletePhoto(Photo photo)
+        public void DeletePhoto(Image photo)
         {
-            _appDbContext.Photo.Remove(photo);
+            _appDbContext.Image.Remove(photo);
             _appDbContext.SaveChanges();
         }
 
-        public Photo GetUserPhoto(int id)
+        public Image GetUserPhoto(int id)
         {
-            return _appDbContext.Photo.Include(i => i.UserDataListItem).FirstOrDefault(i => i.Id == id);
+            return _appDbContext.Image.Include(i => i.UserDataItem).FirstOrDefault(i => i.Id == id);
         }
     }
 }

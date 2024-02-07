@@ -9,9 +9,9 @@ namespace UserRegistration.DAL.Extensions
         public static void AddDatabaseServices(this IServiceCollection services)
         {
             services.AddTransient<IAccountRepository, AccountRepository>();
-            services.AddTransient<IPhotoListRepository, PhotoListRepository>();
-            services.AddTransient<ILocationListRepository, LocationListRepository>();
-            services.AddTransient<IUserDataListRepository, UserDataListRepository>();
+            services.AddTransient<IImageRepository, ImageRepository>();
+            services.AddTransient<ILocationRepository, LocationRepository>();
+            services.AddTransient<IUserDataRepository, UserDataRepository>();
         }
     }
 }

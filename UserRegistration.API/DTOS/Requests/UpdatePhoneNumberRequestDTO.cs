@@ -2,7 +2,7 @@
 
 namespace UserRegistration.API.DTOS.Requests
 {
-    public class UpdatePhoneNumberUserDataListRequestDTO
+    public class UpdatePhoneNumberRequestDTO
     {
         [Required]
         [Phone]

@@ -4,7 +4,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace UserRegistration.DAL.Entities
 {
-    public class UserDataList
+    public class UserData
     {
         [Key]
         public int Id { get; set; }
@@ -19,8 +19,8 @@ namespace UserRegistration.DAL.Entities
         [Required]
         public string EmailAddres { get; set; }
 
-        public LocationList Location { get; set; }
-        public Photo Photo { get; set; }
+        public Location Location { get; set; }
+        public Image Image { get; set; }
 
         [ForeignKey(nameof(Account))]
         [Required]

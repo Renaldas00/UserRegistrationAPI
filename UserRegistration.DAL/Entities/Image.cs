@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserRegistration.DAL.Entities
 {
-    public class Photo
+    public class Image
     {
         [Key]
         public int Id { get; set; }
@@ -14,10 +14,10 @@ namespace UserRegistration.DAL.Entities
         [Required]
         public byte[] Content { get; set; }
 
-        [ForeignKey(nameof(UserDataListItem))]
+        [ForeignKey(nameof(UserDataItem))]
         [Required]
-        public int UserDataListItemId { get; set; }
-        public UserDataList UserDataListItem { get; set; }
+        public int UserDataItemId { get; set; }
+        public UserData UserDataItem { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

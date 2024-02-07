@@ -10,30 +10,30 @@ namespace UserRegistration.DAL
         }
 
         public DbSet<Account> Account { get; set; }
-        public DbSet<UserDataList> UserDataList { get; set; }
-        public DbSet<LocationList> LocationList { get; set; }
-        public DbSet<Photo> Photo { get; set; }
+        public DbSet<UserData> UserData { get; set; }
+        public DbSet<Location> Location { get; set; }
+        public DbSet<Image> Image { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>()
-            .HasOne(a => a.UserDataList)
+            .HasOne(a => a.UserData)
             .WithOne(ud => ud.Account)
-            .HasForeignKey<UserDataList>(ud => ud.AccountId)
+            .HasForeignKey<UserData>(ud => ud.AccountId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Photo>()
-                .HasOne(ud => ud.UserDataListItem)
-                .WithOne(p => p.Photo)
-                .HasForeignKey<Photo>(p => p.UserDataListItemId)
+            modelBuilder.Entity<Image>()
+                .HasOne(ud => ud.UserDataItem)
+                .WithOne(p => p.Image)
+                .HasForeignKey<Image>(p => p.UserDataItemId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<LocationList>()
+            modelBuilder.Entity<Location>()
                 .HasOne(ud => ud.UserLocation)
                 .WithOne(l => l.Location)
-                .HasForeignKey<LocationList>(l => l.UserLocationId)
+                .HasForeignKey<Location>(l => l.UserLocationId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 

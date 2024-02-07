@@ -14,7 +14,7 @@ namespace UserRegistration.DAL.Entities
         public byte[] PasswordHash { get; set; }
         [Required]
         public string Role { get; set; } = "User";
-        public UserDataList UserDataList { get; set; }
+        public UserData UserData { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

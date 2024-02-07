@@ -12,8 +12,8 @@ using UserRegistration.DAL;
 namespace UserRegistration.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240206133622_init")]
-    partial class init
+    [Migration("20240207092621_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,7 +58,43 @@ namespace UserRegistration.API.Migrations
                     b.ToTable("Account");
                 });
 
-            modelBuilder.Entity("UserRegistration.DAL.Entities.LocationList", b =>
+            modelBuilder.Entity("UserRegistration.DAL.Entities.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("Content")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserDataItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserDataItemId")
+                        .IsUnique();
+
+                    b.ToTable("Image");
+                });
+
+            modelBuilder.Entity("UserRegistration.DAL.Entities.Location", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,46 +132,10 @@ namespace UserRegistration.API.Migrations
                     b.HasIndex("UserLocationId")
                         .IsUnique();
 
-                    b.ToTable("LocationList");
+                    b.ToTable("Location");
                 });
 
-            modelBuilder.Entity("UserRegistration.DAL.Entities.Photo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte[]>("Content")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserDataListItemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserDataListItemId")
-                        .IsUnique();
-
-                    b.ToTable("Photo");
-                });
-
-            modelBuilder.Entity("UserRegistration.DAL.Entities.UserDataList", b =>
+            modelBuilder.Entity("UserRegistration.DAL.Entities.UserData", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -177,36 +177,36 @@ namespace UserRegistration.API.Migrations
                     b.HasIndex("AccountId")
                         .IsUnique();
 
-                    b.ToTable("UserDataList");
+                    b.ToTable("UserData");
                 });
 
-            modelBuilder.Entity("UserRegistration.DAL.Entities.LocationList", b =>
+            modelBuilder.Entity("UserRegistration.DAL.Entities.Image", b =>
                 {
-                    b.HasOne("UserRegistration.DAL.Entities.UserDataList", "UserLocation")
+                    b.HasOne("UserRegistration.DAL.Entities.UserData", "UserDataItem")
+                        .WithOne("Image")
+                        .HasForeignKey("UserRegistration.DAL.Entities.Image", "UserDataItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserDataItem");
+                });
+
+            modelBuilder.Entity("UserRegistration.DAL.Entities.Location", b =>
+                {
+                    b.HasOne("UserRegistration.DAL.Entities.UserData", "UserLocation")
                         .WithOne("Location")
-                        .HasForeignKey("UserRegistration.DAL.Entities.LocationList", "UserLocationId")
+                        .HasForeignKey("UserRegistration.DAL.Entities.Location", "UserLocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("UserLocation");
                 });
 
-            modelBuilder.Entity("UserRegistration.DAL.Entities.Photo", b =>
-                {
-                    b.HasOne("UserRegistration.DAL.Entities.UserDataList", "UserDataListItem")
-                        .WithOne("Photo")
-                        .HasForeignKey("UserRegistration.DAL.Entities.Photo", "UserDataListItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserDataListItem");
-                });
-
-            modelBuilder.Entity("UserRegistration.DAL.Entities.UserDataList", b =>
+            modelBuilder.Entity("UserRegistration.DAL.Entities.UserData", b =>
                 {
                     b.HasOne("UserRegistration.DAL.Entities.Account", "Account")
-                        .WithOne("UserDataList")
-                        .HasForeignKey("UserRegistration.DAL.Entities.UserDataList", "AccountId")
+                        .WithOne("UserData")
+                        .HasForeignKey("UserRegistration.DAL.Entities.UserData", "AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -215,16 +215,16 @@ namespace UserRegistration.API.Migrations
 
             modelBuilder.Entity("UserRegistration.DAL.Entities.Account", b =>
                 {
-                    b.Navigation("UserDataList")
+                    b.Navigation("UserData")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UserRegistration.DAL.Entities.UserDataList", b =>
+            modelBuilder.Entity("UserRegistration.DAL.Entities.UserData", b =>
                 {
-                    b.Navigation("Location")
+                    b.Navigation("Image")
                         .IsRequired();
 
-                    b.Navigation("Photo")
+                    b.Navigation("Location")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

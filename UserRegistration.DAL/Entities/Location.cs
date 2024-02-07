@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UserRegistration.DAL.Entities
 {
-    public class LocationList
+    public class Location
     {
         [Key]
         public int Id { get; set; }
@@ -15,7 +15,7 @@ namespace UserRegistration.DAL.Entities
         [ForeignKey(nameof(UserLocation))]
         [Required]
         public int UserLocationId { get; set; }
-        public UserDataList UserLocation { get; set; } = null!;
+        public UserData UserLocation { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

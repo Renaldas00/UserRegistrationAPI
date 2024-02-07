@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UserRegistration.API.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,7 +29,7 @@ namespace UserRegistration.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserDataList",
+                name: "UserData",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -45,9 +45,9 @@ namespace UserRegistration.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserDataList", x => x.Id);
+                    table.PrimaryKey("PK_UserData", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserDataList_Account_AccountId",
+                        name: "FK_UserData_Account_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Account",
                         principalColumn: "Id",
@@ -55,7 +55,31 @@ namespace UserRegistration.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LocationList",
+                name: "Image",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Size = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    UserDataItemId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Image", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Image_UserData_UserDataItemId",
+                        column: x => x.UserDataItemId,
+                        principalTable: "UserData",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Location",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -71,54 +95,30 @@ namespace UserRegistration.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LocationList", x => x.Id);
+                    table.PrimaryKey("PK_Location", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LocationList_UserDataList_UserLocationId",
+                        name: "FK_Location_UserData_UserLocationId",
                         column: x => x.UserLocationId,
-                        principalTable: "UserDataList",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Photo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Size = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    UserDataListItemId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Photo", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Photo_UserDataList_UserDataListItemId",
-                        column: x => x.UserDataListItemId,
-                        principalTable: "UserDataList",
+                        principalTable: "UserData",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LocationList_UserLocationId",
-                table: "LocationList",
+                name: "IX_Image_UserDataItemId",
+                table: "Image",
+                column: "UserDataItemId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Location_UserLocationId",
+                table: "Location",
                 column: "UserLocationId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photo_UserDataListItemId",
-                table: "Photo",
-                column: "UserDataListItemId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserDataList_AccountId",
-                table: "UserDataList",
+                name: "IX_UserData_AccountId",
+                table: "UserData",
                 column: "AccountId",
                 unique: true);
         }
@@ -127,13 +127,13 @@ namespace UserRegistration.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LocationList");
+                name: "Image");
 
             migrationBuilder.DropTable(
-                name: "Photo");
+                name: "Location");
 
             migrationBuilder.DropTable(
-                name: "UserDataList");
+                name: "UserData");
 
             migrationBuilder.DropTable(
                 name: "Account");
