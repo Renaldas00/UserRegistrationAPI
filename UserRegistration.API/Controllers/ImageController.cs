@@ -49,7 +49,7 @@ namespace UserRegistration.API.Controllers
         public IActionResult Get(int id)
         {
             _logger.LogInformation($"Getting image {id} for user {_userId}");
-            var entity = _imageRepository.GetUserPhoto(id);
+            var entity = _imageRepository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"Image {id} not found for user {_userId}");
@@ -89,7 +89,7 @@ namespace UserRegistration.API.Controllers
             }
 
             var image = _mapper.Map(req, todoItemId,200,200);
-            _imageRepository.AddPhoto(image);
+            _imageRepository.Add(image);
 
             return Created(nameof(Get), new { id = image.Id });
         }
@@ -101,7 +101,7 @@ namespace UserRegistration.API.Controllers
         public IActionResult Delete(int id)
         {
             _logger.LogInformation($"Deleting image {id} for user {_userId}");
-            var entity = _imageRepository.GetUserPhoto(id);
+            var entity = _imageRepository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"Image {id} not found for user {_userId}");
@@ -112,7 +112,7 @@ namespace UserRegistration.API.Controllers
                 _logger.LogInformation($"Image {id} is forbidden for user {_userId}");
                 return Forbid();
             }
-            _imageRepository.DeletePhoto(entity);
+            _imageRepository.Delete(entity);
             return NoContent();
         }
 
@@ -131,7 +131,7 @@ namespace UserRegistration.API.Controllers
 
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _imageRepository.GetUserPhoto(id);
+            var entity = _imageRepository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
@@ -145,7 +145,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _imageRepository.UpdatePhoto(entity);
+            _imageRepository.Update(entity);
             return NoContent();
         }
         [HttpGet("download/{id}")]
@@ -156,7 +156,7 @@ namespace UserRegistration.API.Controllers
         public IActionResult DownloadPhoto(int id)
         {
             _logger.LogInformation($"Getting image {id} for user {_userId}");
-            var entity = _imageRepository.GetUserPhoto(id);
+            var entity = _imageRepository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"Image {id} not found for user {_userId}");

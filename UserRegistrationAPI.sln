@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserRegistration.DAL", "Use
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D84BEDF8-2287-4569-8E92-003137519CF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistration.BLLTests", "UserRegistration.BLLTests\UserRegistration.BLLTests.csproj", "{EAB9D426-646A-43DE-8860-EDAAA4DCFCA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserRegistration.BLLTests", "UserRegistration.BLLTests\UserRegistration.BLLTests.csproj", "{EAB9D426-646A-43DE-8860-EDAAA4DCFCA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistration.DALTests", "UserRegistration.DALTests\UserRegistration.DALTests.csproj", "{BEFB8C34-AC7D-4C29-B686-ED0F637F8FD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserRegistration.DALTests", "UserRegistration.DALTests\UserRegistration.DALTests.csproj", "{BEFB8C34-AC7D-4C29-B686-ED0F637F8FD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistration.APITests", "UserRegistration.APITests\UserRegistration.APITests.csproj", "{A3D4EAC9-7232-476E-8E9C-E9B75EEF6E53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{BEFB8C34-AC7D-4C29-B686-ED0F637F8FD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEFB8C34-AC7D-4C29-B686-ED0F637F8FD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEFB8C34-AC7D-4C29-B686-ED0F637F8FD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3D4EAC9-7232-476E-8E9C-E9B75EEF6E53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3D4EAC9-7232-476E-8E9C-E9B75EEF6E53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3D4EAC9-7232-476E-8E9C-E9B75EEF6E53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3D4EAC9-7232-476E-8E9C-E9B75EEF6E53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EAB9D426-646A-43DE-8860-EDAAA4DCFCA7} = {D84BEDF8-2287-4569-8E92-003137519CF4}
 		{BEFB8C34-AC7D-4C29-B686-ED0F637F8FD1} = {D84BEDF8-2287-4569-8E92-003137519CF4}
+		{A3D4EAC9-7232-476E-8E9C-E9B75EEF6E53} = {D84BEDF8-2287-4569-8E92-003137519CF4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1295429F-EDD5-4F18-98A3-7C0E93847F9F}

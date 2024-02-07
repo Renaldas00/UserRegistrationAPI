@@ -8,7 +8,7 @@ namespace UserRegistration.API.Mappers.Interfaces
     {
         UserDataListResultDTO Map(UserData entity);
         List<UserDataListResultDTO> Map(IEnumerable<UserData> entities);
-        UserData Map(UserDataListRequestDTO dto);
+        UserData Map(UserDataRequestDTO dto);
 
         void ProjectTo(UpdateFirstNameRequestDTO from, UserData to);
 

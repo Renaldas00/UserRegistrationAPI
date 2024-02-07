@@ -4,36 +4,15 @@ using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.DAL.Repositories
 {
-    public class LocationRepository : ILocationRepository
+    public class LocationRepository : Repository<Location>, ILocationRepository
     {
-        private readonly AppDbContext _appDbContext;
-
-        public LocationRepository(AppDbContext appDbContext)
+        public LocationRepository(AppDbContext context) : base(context)
         {
-            _appDbContext = appDbContext;
         }
 
-        public int CreateLocationList(Location locationList)
-        {
-            _appDbContext.Location.Add(locationList);
-            _appDbContext.SaveChanges();
-            return locationList.Id;
-        }
-        public Location GetLocationListById(int id)
+        public override Location? Get(int id)
         {
             return _appDbContext.Location.Include(i => i.UserLocation).FirstOrDefault(i => i.Id == id);
-        }
-
-        public void DeleteLocationList(Location locationList)
-        {
-            _appDbContext.Location.Remove(locationList);
-            _appDbContext.SaveChanges();
-        }
-
-        public void UpdateLocationList(Location locationList)
-        {
-            _appDbContext.Location.Update(locationList);
-            _appDbContext.SaveChanges();
         }
     }
 }

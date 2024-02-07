@@ -46,7 +46,7 @@ namespace UserRegistration.API.Controllers
         public IActionResult Get(int id)
         {
             _logger.LogInformation($"Getting user data with id {id} for user {_userId}");
-            var entity = _repository.GetLocationListById(id);
+            var entity = _repository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data with id {id} for user {_userId} not found");
@@ -70,7 +70,7 @@ namespace UserRegistration.API.Controllers
         {
             _logger.LogInformation($"Creating user data list for user {_userId} with Title {req.Country}");
             var entity = _mapper.Map(req, id);
-            _repository.CreateLocationList(entity);
+            _repository.Add(entity);
 
             return Ok(entity);
         }
@@ -91,7 +91,7 @@ namespace UserRegistration.API.Controllers
         public IActionResult Put(int id, UpdateCountryRequestDTO req)
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _repository.GetLocationListById(id);
+            var entity = _repository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
@@ -105,7 +105,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _repository.UpdateLocationList(entity);
+            _repository.Update(entity);
             return NoContent();
         }
         /// <summary>
@@ -124,7 +124,7 @@ namespace UserRegistration.API.Controllers
         public IActionResult Put(int id, UpdateCityRequestDTO req)
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _repository.GetLocationListById(id);
+            var entity = _repository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
@@ -138,7 +138,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _repository.UpdateLocationList(entity);
+            _repository.Update(entity);
             return NoContent();
         }
         /// <summary>
@@ -157,7 +157,7 @@ namespace UserRegistration.API.Controllers
         public IActionResult Put(int id, UpdateStreetRequestDTO req)
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _repository.GetLocationListById(id);
+            var entity = _repository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
@@ -171,7 +171,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _repository.UpdateLocationList(entity);
+            _repository.Update(entity);
             return NoContent();
         }
         /// <summary>
@@ -190,7 +190,7 @@ namespace UserRegistration.API.Controllers
         public IActionResult Put(int id, UpdateHouseNumberRequestDTO req)
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _repository.GetLocationListById(id);
+            var entity = _repository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
@@ -204,7 +204,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _repository.UpdateLocationList(entity);
+            _repository.Update(entity);
             return NoContent();
         }
         /// <summary>
@@ -223,7 +223,7 @@ namespace UserRegistration.API.Controllers
         public IActionResult Put(int id, UpdateApartmentNumberRequestDTO req)
         {
             _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
-            var entity = _repository.GetLocationListById(id);
+            var entity = _repository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
@@ -237,7 +237,7 @@ namespace UserRegistration.API.Controllers
 
 
             _mapper.ProjectTo(req, entity);
-            _repository.UpdateLocationList(entity);
+            _repository.Update(entity);
             return NoContent();
         }
 
@@ -254,7 +254,7 @@ namespace UserRegistration.API.Controllers
         public IActionResult Delete(int id)
         {
             _logger.LogInformation($"Deleting todo with id {id} for user {_userId}");
-            var entity = _repository.GetLocationListById(id);
+            var entity = _repository.Get(id);
             if (entity == null)
             {
                 _logger.LogInformation($"Todo with id {id} for user {_userId} not found");
@@ -265,7 +265,7 @@ namespace UserRegistration.API.Controllers
                 _logger.LogInformation($"Todo with id {id} for user {_userId} is forbidden");
                 return Forbid();
             }
-            _repository.DeleteLocationList(entity);
+            _repository.Delete(entity);
             return NoContent();
         }
     }

@@ -1,7 +1,6 @@
 ﻿using UserRegistration.API.DTOS.Requests;
 using UserRegistration.API.DTOS.Responses;
 using UserRegistration.API.Mappers.Interfaces;
-using UserRegistration.DAL.Entities;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Png;

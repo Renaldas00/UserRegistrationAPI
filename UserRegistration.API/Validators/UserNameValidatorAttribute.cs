@@ -5,7 +5,7 @@ namespace UserRegistration.API.Validators
 {
     public class UserNameValidatorAttribute : ValidationAttribute
     {
-        private const int MinLength = 4;
+        private const int MinLength = 3;
         private const int MaxLength = 36;
         private const string AllowedCharactersPattern = "^[a-zA-Z0-9]*$";
 

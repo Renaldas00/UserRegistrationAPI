@@ -66,11 +66,11 @@ namespace UserRegistration.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
-        public IActionResult Post(UserDataListRequestDTO req)
+        public IActionResult Post(UserDataRequestDTO req)
         {
             _logger.LogInformation($"Creating user data list for user {_userId} with Title {req.FirstName}");
             var entity = _mapper.Map(req);
-            _repository.Create(entity);
+            _repository.Add(entity);
 
             return Ok(entity);
         }
