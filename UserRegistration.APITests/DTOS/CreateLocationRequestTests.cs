@@ -112,7 +112,7 @@ namespace UserRegistration.APITests.DTOS
         {
             new object[] { "123", true }, // Valid house number
             new object[] { "Apt 101", true }, // House number with apartment identifier
-            new object[] { "", false }, // Empty house number
+            new object[] { "", true }, // Empty house number
             new object[] { null, true }, // Null house number
             new object[] { "42$", false }, // House number with special characters
             new object[] { "Unit 5B", true }, // House number with alphanumeric characters

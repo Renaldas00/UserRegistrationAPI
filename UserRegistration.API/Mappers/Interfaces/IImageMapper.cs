@@ -7,15 +7,15 @@ namespace UserRegistration.API.Mappers.Interfaces
     public interface IImageMapper
     {
         /// <summary>
-        /// Maps an UploadImageRequestDTO to an Image entity with the specified TodoItem ID,
+        /// Maps an UploadImageRequestDTO to an Image entity with the specified UserDataItem ID,
         /// resizing the image to the specified target width and height.
         /// </summary>
         /// <param name="dto">The UploadImageRequestDTO containing the image data.</param>
-        /// <param name="todoItemId">The ID of the associated TodoItem.</param>
+        /// <param name="imageItemId">The ID of the associated UserDataItem.</param>
         /// <param name="targetWidth">The target width to resize the image.</param>
         /// <param name="targetHeight">The target height to resize the image.</param>
         /// <returns>The Image entity mapped from the UploadImageRequestDTO.</returns>
-        Image Map(UploadImageRequestDTO dto, int todoItemId, int targetWidth, int targetHeight);
+        Image Map(UploadImageRequestDTO dto, int imageItemId, int targetWidth, int targetHeight);
 
         /// <summary>
         /// Maps a collection of Image entities to a collection of ImageResultDTOs.
@@ -29,7 +29,7 @@ namespace UserRegistration.API.Mappers.Interfaces
         /// </summary>
         /// <param name="from">The UpdateImageRequestDTO containing the updated image data.</param>
         /// <param name="to">The existing Image entity to update.</param>
-        void ProjectTo(UpdateImageRequestDTO from, Image to);
+        void ProjectTo(UpdateImageRequestDTO from, Image to, int targetWidth, int targetHeight);
 
     }
 }

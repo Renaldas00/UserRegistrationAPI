@@ -19,21 +19,21 @@ namespace UserRegistration.API.Controllers
         private readonly IImageRepository _imageRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IImageMapper _mapper;
-        private readonly IUserDataRepository _todoRepository;
+        private readonly IUserDataRepository _userDataRepository;
 
         private readonly Guid _userId;
         public ImageController(ILogger<ImageController> logger,
             IImageRepository imageRepository,
             IHttpContextAccessor httpContextAccessor,
             IImageMapper mapper,
-            IUserDataRepository todoRepository)
+            IUserDataRepository userDataRepository)
         {
             _logger = logger;
             _imageRepository = imageRepository;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
             _userId = new Guid(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            _todoRepository = todoRepository;
+            _userDataRepository = userDataRepository;
         }
 
         /// <summary>
@@ -59,6 +59,7 @@ namespace UserRegistration.API.Controllers
                 _logger.LogInformation($"Image {id} not found for user {_userId}");
                 return NotFound();
             }
+            
             if (entity.UserDataItem.AccountId != _userId)
             {
                 _logger.LogInformation($"Image {id} is forbidden for user {_userId}");
@@ -85,13 +86,13 @@ namespace UserRegistration.API.Controllers
         public IActionResult Post([FromRoute] int userDataItemId, [FromForm] UploadImageRequestDTO req)
         {
             _logger.LogInformation($"Creating image for user {_userId}");
-            var todoEntity = _todoRepository.Get(userDataItemId);
-            if (todoEntity == null)
+            var userDataEntity = _userDataRepository.Get(userDataItemId);
+            if (userDataEntity == null)
             {
                 _logger.LogInformation($"UserData with id {userDataItemId} for user {_userId} not found");
                 return NotFound("UserData item not found");
             }
-            if (todoEntity.AccountId != _userId)
+            if (userDataEntity.AccountId != _userId)
             {
                 _logger.LogInformation($"UserData with id {userDataItemId} for user {_userId} is forbidden");
                 return Forbid();
@@ -124,6 +125,7 @@ namespace UserRegistration.API.Controllers
                 _logger.LogInformation($"Image {id} not found for user {_userId}");
                 return NotFound();
             }
+           
             if (entity.UserDataItem.AccountId != _userId)
             {
                 _logger.LogInformation($"Image {id} is forbidden for user {_userId}");
@@ -164,7 +166,7 @@ namespace UserRegistration.API.Controllers
                 _logger.LogInformation($"Updating user image {id} for user {_userId} is forbidden");
                 return Forbid();
             }
-            _mapper.ProjectTo(req, entity);
+            _mapper.ProjectTo(req, entity,200,200);
             _imageRepository.Update(entity);
             return NoContent();
         }

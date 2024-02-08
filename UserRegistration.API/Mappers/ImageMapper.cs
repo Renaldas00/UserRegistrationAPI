@@ -23,7 +23,7 @@ namespace UserRegistration.API.Mappers
             return entities.Select(Map).ToList();
         }
 
-        public DAL.Entities.Image Map(UploadImageRequestDTO dto, int todoItemId, int targetWidth, int targetHeight)
+        public DAL.Entities.Image Map(UploadImageRequestDTO dto, int imageItemId, int targetWidth, int targetHeight)
         {
             using var stream = dto.Image.OpenReadStream();
             using var image = SixLabors.ImageSharp.Image.Load(stream);
@@ -39,7 +39,7 @@ namespace UserRegistration.API.Mappers
                     return new DAL.Entities.Image
                     {
                         ImageName = dto.ImageName!,
-                        UserDataItemId = todoItemId,
+                        UserDataItemId = imageItemId,
                         Content = resizedStream.ToArray(),
                         Size = (int)resizedStream.Length,
                         CreatedAt = DateTime.UtcNow,
@@ -48,15 +48,25 @@ namespace UserRegistration.API.Mappers
                 }
             }
         }
-            public void ProjectTo(UpdateImageRequestDTO from, DAL.Entities.Image to)
+            public void ProjectTo(UpdateImageRequestDTO from, DAL.Entities.Image to, int targetWidth, int targetHeight)
         {
-            using var stream = new MemoryStream();
-            from.Image.CopyTo(stream);
-            var imageBytes = stream.ToArray();
+            using var stream = from.Image.OpenReadStream();
+            using var image = SixLabors.ImageSharp.Image.Load(stream);
 
-            to.ImageName = from.ImageName!;
-            to.Content = imageBytes;
-            to.UpdatedAt = DateTime.UtcNow; ;
+            using (var resizedImage = image.Clone(x => x.Resize(targetWidth, targetHeight)))
+            {
+                using (var resizedStream = new MemoryStream())
+                {
+                    // Use a specific image format to encode the resized image
+                    var encoder = new PngEncoder(); // You can use other formats like JpegEncoder if needed
+                    resizedImage.Save(resizedStream, encoder);
+
+                    to.ImageName = from.ImageName!;
+                    to.Content = resizedStream.ToArray();
+                    to.Size = (int)resizedStream.Length;
+                    to.UpdatedAt = DateTime.UtcNow;
+                }
+            }
         }
     }
 }

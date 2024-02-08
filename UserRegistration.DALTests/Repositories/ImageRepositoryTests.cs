@@ -17,7 +17,6 @@ namespace UserRegistration.DALTests.Repositories
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase" + Guid.NewGuid())
                 .Options;
-            //Ensure that the data seeding is skipped when the context is created
             _context = new AppDbContext(options);
             _imageRepository = new ImageRepository(_context);
         }
@@ -36,7 +35,7 @@ namespace UserRegistration.DALTests.Repositories
         public void GetAll_IncludeUserData_ReturnsImageWithUserData()
         {
             // Arrange
-            var todoItem = new UserData
+            var imageItem = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
@@ -45,17 +44,15 @@ namespace UserRegistration.DALTests.Repositories
                 SocialSecurityCode = "123456789",
                 PhoneNumber = "+37069999999",
                 CreatedAt = DateTime.Now,
-
             };
             var image1 = new Image
             {
                 Id = 1,
                 ImageName = "Image1",
-                
                 Content = Encoding.UTF8.GetBytes("Content1"),
                 UserDataItemId = 1
             };
-            _context.UserData.Add(todoItem);
+            _context.UserData.Add(imageItem);
             _context.Image.Add(image1);
             _context.SaveChanges();
 
@@ -70,7 +67,7 @@ namespace UserRegistration.DALTests.Repositories
         public void Get_ValidId_ReturnsCorrectImage()
         {
             // Arrange
-            var todoItem = new UserData
+            var imageItem = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
@@ -79,17 +76,15 @@ namespace UserRegistration.DALTests.Repositories
                 SocialSecurityCode = "123456789",
                 PhoneNumber = "+37069999999",
                 CreatedAt = DateTime.Now,
-
             };
             var image = new Image
             {
                 Id = 1,
                 ImageName = "Image1",
-                
                 Content = Encoding.UTF8.GetBytes("Content1"),
                 UserDataItemId = 1
             };
-            _context.UserData.Add(todoItem);
+            _context.UserData.Add(imageItem);
             _context.Image.Add(image);
             _context.SaveChanges();
 
@@ -99,7 +94,6 @@ namespace UserRegistration.DALTests.Repositories
             // Assert
             Assert.NotNull(result);
             Assert.Equal(image.ImageName, result.ImageName);
-
         }
         [Fact]
         public void Get_InvalidId_ReturnsNull()
@@ -117,7 +111,6 @@ namespace UserRegistration.DALTests.Repositories
             var image = new Image
             {
                 ImageName = "Image1",
-                
                 Content = Encoding.UTF8.GetBytes("Content1"),
                 UserDataItemId = 1
             };
@@ -132,7 +125,7 @@ namespace UserRegistration.DALTests.Repositories
         public void Update_ValidImage_ChangesAreSaved()
         {
             // Arrange
-            var todoItem = new UserData
+            var imageItem = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
@@ -147,11 +140,10 @@ namespace UserRegistration.DALTests.Repositories
             {
                 Id = 1,
                 ImageName = "Image1",
-                
                 Content = Encoding.UTF8.GetBytes("Content1"),
                 UserDataItemId = 1
             };
-            _context.UserData.Add(todoItem);
+            _context.UserData.Add(imageItem);
             _context.Image.Add(image);
             _context.SaveChanges();
 
@@ -171,7 +163,6 @@ namespace UserRegistration.DALTests.Repositories
             {
                 Id = 1,
                 ImageName = "Image1",
-                
                 Content = Encoding.UTF8.GetBytes("Content1"),
                 UserDataItemId = 1
             };
@@ -183,7 +174,7 @@ namespace UserRegistration.DALTests.Repositories
         public void Delete_ValidId_ImageDoesNotExist()
         {
             // Arrange
-            var todoItem = new UserData
+            var imageItem = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
@@ -192,7 +183,6 @@ namespace UserRegistration.DALTests.Repositories
                 SocialSecurityCode = "123456789",
                 PhoneNumber = "+37069999999",
                 CreatedAt = DateTime.Now,
-
             };
             var image = new Image
             {
@@ -202,7 +192,7 @@ namespace UserRegistration.DALTests.Repositories
                 Content = Encoding.UTF8.GetBytes("Content1"),
                 UserDataItemId = 1
             };
-            _context.UserData.Add(todoItem);
+            _context.UserData.Add(imageItem);
             _context.Image.Add(image);
             _context.SaveChanges();
 
@@ -220,7 +210,6 @@ namespace UserRegistration.DALTests.Repositories
             {
                 Id = 1,
                 ImageName = "Image1",
-                
                 Content = Encoding.UTF8.GetBytes("Content1"),
                 UserDataItemId = 1
             };
@@ -232,7 +221,7 @@ namespace UserRegistration.DALTests.Repositories
         public void Delete_ValidId_ImageDoesNotExistButUserDataExist()
         {
             // Arrange
-            var todoItem = new UserData
+            var imageItem = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
@@ -241,7 +230,6 @@ namespace UserRegistration.DALTests.Repositories
                 SocialSecurityCode = "123456789",
                 PhoneNumber = "+37069999999",
                 CreatedAt = DateTime.Now,
-
             };
             var image = new Image
             {
@@ -250,7 +238,7 @@ namespace UserRegistration.DALTests.Repositories
                 Content = Encoding.UTF8.GetBytes("Content1"),
                 UserDataItemId = 1
             };
-            _context.UserData.Add(todoItem);
+            _context.UserData.Add(imageItem);
             _context.Image.Add(image);
             _context.SaveChanges();
 
@@ -259,7 +247,7 @@ namespace UserRegistration.DALTests.Repositories
 
             // Assert
             Assert.Null(_context.Image.Find(image.Id));
-            Assert.NotNull(_context.UserData.Find(todoItem.Id));
+            Assert.NotNull(_context.UserData.Find(imageItem.Id));
 
         }
     }

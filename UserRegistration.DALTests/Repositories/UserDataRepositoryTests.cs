@@ -10,72 +10,70 @@ namespace UserRegistration.DALTests.Repositories
     public class UserDataRepositoryTests
     {
         private readonly AppDbContext _context;
-        private readonly UserDataRepository _todoRepository;
-
+        private readonly UserDataRepository _userDataRepository;
         public UserDataRepositoryTests()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase" + Guid.NewGuid())
                 .Options;
-            //Ensure that the data seeding is skipped when the context is created
             _context = new AppDbContext(options);
-            _todoRepository = new UserDataRepository(_context);
+            _userDataRepository = new UserDataRepository(_context);
         }
 
         [Fact]
-        public void GetAll_NoTodoItems_ReturnsEmpty()
+        public void GetAll_NoUserDataItems_ReturnsEmpty()
         {
             // Act
-            var result = _todoRepository.GetAll();
+            var result = _userDataRepository.GetAll();
 
             // Assert
             Assert.Empty(result);
         }
         [Fact]
-        public void GetAll_SomeTodoItems_ReturnsAllTodoItems()
+        public void GetAll_SomeUserDataItems_ReturnsAllUserDataItems()
         {
             // Arrange
-            var todoItem1 = new UserData
+            var userDataItem1 = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
-                LastName = "TodoItem1",
+                LastName = "UserDataItem1",
                 SocialSecurityCode = "123456789",
                 PhoneNumber = "+37069999999",
                 EmailAddres = "hihn@gmail.com",
                 CreatedAt = DateTime.Now,
 
             };
-            var todoItem2 = new UserData
+            var userDataItem2 = new UserData
             {
                 Id = 2,
                 FirstName = "Other",
-                LastName = "TodoItem2",
+                LastName = "UserDataItem2",
                 SocialSecurityCode = "987654321",
                 PhoneNumber = "+37069999999",
                 EmailAddres = "hihn@gmail.com",
                 CreatedAt = DateTime.Now,
 
             };
-            _context.UserData.Add(todoItem1);
-            _context.UserData.Add(todoItem2);
+            _context.UserData.Add(userDataItem1);
+            _context.UserData.Add(userDataItem2);
             _context.SaveChanges();
 
             // Act
-            var result = _todoRepository.GetAll();
+            var result = _userDataRepository.GetAll();
 
             // Assert
             Assert.Equal(2, result.Count());
         }
         [Fact]
-        public void Get_ValidId_ReturnsCorrectTodoItem()
+        public void Get_ValidId_ReturnsCorrectUserDataItem()
         {
             // Arrange
             var UserData = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
-                LastName = "TodoItem1",
+                LastName = "UserDataItem1",
                 PhoneNumber = "+37069999999",
                 EmailAddres = "hihn@gmail.com",
                 SocialSecurityCode = "123456789",
@@ -86,7 +84,7 @@ namespace UserRegistration.DALTests.Repositories
             _context.SaveChanges();
 
             // Act
-            var result = _todoRepository.Get(1);
+            var result = _userDataRepository.Get(1);
 
             // Assert
             Assert.Equal(UserData, result);
@@ -95,21 +93,21 @@ namespace UserRegistration.DALTests.Repositories
         public void Get_InvalidId_ReturnsNull()
         {
             // Act
-            var result = _todoRepository.Get(1);
+            var result = _userDataRepository.Get(1);
 
             // Assert
             Assert.Null(result);
         }
 
         [Fact]
-        public void Add_ValidTodoItem_TodoItemIsAdded()
+        public void Add_ValidUserDataItem_UserDataItemIsAdded()
         {
             // Arrange
             var UserData = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
-                LastName = "TodoItem1",
+                LastName = "UserDataItem1",
                 SocialSecurityCode = "123456789",
                 PhoneNumber = "+37069999999",
                 EmailAddres = "hihn@gmail.com",
@@ -117,21 +115,21 @@ namespace UserRegistration.DALTests.Repositories
             };
 
             // Act
-            _todoRepository.Add(UserData);
+            _userDataRepository.Add(UserData);
 
             // Assert
             Assert.Equal(UserData, _context.UserData.Find(UserData.Id));
         }
 
         [Fact]
-        public void Update_ValidTodoItem_TodoItemIsUpdated()
+        public void Update_ValidUserDataItem_UserDataItemIsUpdated()
         {
             // Arrange
             var UserData = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
-                LastName = "TodoItem1",
+                LastName = "UserDataItem1",
                 SocialSecurityCode = "123456789",
                 PhoneNumber = "+37069999999",
                 EmailAddres = "hihn@gmail.com",
@@ -143,21 +141,21 @@ namespace UserRegistration.DALTests.Repositories
             UserData.LastName = "NewTitle";
 
             // Act
-            _todoRepository.Update(UserData);
+            _userDataRepository.Update(UserData);
 
             // Assert
             Assert.Equal("NewTitle", _context.UserData.Find(UserData.Id)?.LastName);
         }
 
         [Fact]
-        public void Update_TodoitemNotInDatabase_ThrowsException()
+        public void Update_UserDataitemNotInDatabase_ThrowsException()
         {
             // Arrange
             var UserData = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
-                LastName = "TodoItem1",
+                LastName = "UserDataItem1",
                 SocialSecurityCode = "123456789",
                 PhoneNumber = "+37069999999",
                 EmailAddres = "hihn@gmail.com",
@@ -165,19 +163,19 @@ namespace UserRegistration.DALTests.Repositories
             };
 
             // Act & Assert
-            Assert.Throws<DbUpdateConcurrencyException>(() => _todoRepository.Update(UserData));
+            Assert.Throws<DbUpdateConcurrencyException>(() => _userDataRepository.Update(UserData));
 
         }
 
         [Fact]
-        public void Delete_ValidId_TodoItemDoesNotExist()
+        public void Delete_ValidId_UserDataItemDoesNotExist()
         {
             // Arrange
             var UserData = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
-                LastName = "TodoItem1",
+                LastName = "UserDataItem1",
                 SocialSecurityCode = "123456789",
                 PhoneNumber = "+37069999999",
                 EmailAddres = "hihn@gmail.com",
@@ -188,21 +186,21 @@ namespace UserRegistration.DALTests.Repositories
             _context.SaveChanges();
 
             // Act
-            _todoRepository.Delete(UserData);
+            _userDataRepository.Delete(UserData);
 
             // Assert
             Assert.Null(_context.UserData.Find(UserData.Id));
         }
 
         [Fact]
-        public void Delete_ValidId_TodoItemAndImageDoesNotExist()
+        public void Delete_ValidId_UserDataItemAndImageDoesNotExist()
         {
             // Arrange
             var UserData = new UserData
             {
                 Id = 1,
                 FirstName = "Other",
-                LastName = "TodoItem1",
+                LastName = "UserDataItem1",
                 SocialSecurityCode = "123456789",
                 PhoneNumber = "+37069999999",
                 EmailAddres = "hihn@gmail.com",
@@ -221,7 +219,7 @@ namespace UserRegistration.DALTests.Repositories
             _context.SaveChanges();
 
             // Act
-            _todoRepository.Delete(UserData);
+            _userDataRepository.Delete(UserData);
 
             // Assert
             Assert.Null(_context.UserData.Find(UserData.Id));

@@ -10,7 +10,7 @@ namespace UserRegistration.DAL.Repositories
         {
         }
 
-        public override Location? Get(int id)
+        public Location? Get(int id)
         {
             return _appDbContext.Location.Include(i => i.UserLocation).FirstOrDefault(i => i.Id == id);
         }
