@@ -37,7 +37,7 @@ namespace UserRegistration.API.Controllers
         ///  User Sign Up
         /// </summary>
         /// <param name="req">User Account Details</param>
-        /// <response code="201">User UUID</response>
+        /// <response code="201">UUID</response>
         /// <response code="400">Model validation error</response>
         /// <response code="500">System error</response>
         [HttpPost("signup")]

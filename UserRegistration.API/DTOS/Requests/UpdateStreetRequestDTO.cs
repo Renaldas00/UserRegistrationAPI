@@ -1,10 +1,13 @@
-﻿namespace UserRegistration.API.DTOS.Requests
+﻿using System.ComponentModel.DataAnnotations;
+using UserRegistration.API.Validators;
+
+namespace UserRegistration.API.DTOS.Requests
 {
     public class UpdateStreetRequestDTO
     {
-        
-            public string Street { get; set; }
-            public DateTime UpdatedAt { get; internal set; }
-        
+        [Required]
+        [StreetValidator]
+        public string Street { get; set; }
+        public DateTime UpdatedAt { get; internal set; }
     }
 }

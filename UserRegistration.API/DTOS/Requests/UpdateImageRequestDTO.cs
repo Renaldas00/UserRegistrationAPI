@@ -6,7 +6,7 @@ namespace UserRegistration.API.DTOS.Requests
     public class UpdateImageRequestDTO
     {
         [Required]
-        [StringLength(100)]
+        [ImageNameValidator]
         public string ImageName { get; set; }
 
         [MaxFileSize(5 * 1024 * 1024)]

@@ -5,27 +5,30 @@ namespace UserRegistration.DAL.Repositories.Interfaces
     public interface IAccountRepository
     {
         /// <summary>
-        /// Insert Account Model Into Database
+        /// Inserts an Account model into the database.
         /// </summary>
-        /// <param name="model">Account Model To Insert</param>
-        /// <returns>Account GUID/UUID</returns>
+        /// <param name="model">The Account model to insert.</param>
+        /// <returns>The GUID/UUID of the inserted Account.</returns>
         Guid Create(Account model);
+
         /// <summary>
-        /// Delete Account From Database (By Admin Only)
+        /// Deletes an Account from the database (By Admin Only).
         /// </summary>
-        /// <param name="id">Account GUID To Delete</param>
+        /// <param name="id">The GUID of the Account to delete.</param>
         void Delete(Guid id);
+
         /// <summary>
-        ///  Retrieve Account From Database
+        /// Retrieves an Account from the database.
         /// </summary>
-        /// <param name="id">GUID To Retrieve By</param>
-        /// <returns></returns>
+        /// <param name="id">The GUID to retrieve the Account by.</param>
+        /// <returns>True if the Account exists; otherwise, false.</returns>
         bool Exists(Guid id);
+
         /// <summary>
-        /// Check If Account Exists
+        /// Checks if an Account exists.
         /// </summary>
-        /// <param name="userName">Username To Search For</param>
-        /// <returns></returns>
+        /// <param name="userName">The username to search for.</param>
+        /// <returns>The Account if found; otherwise, null.</returns>
         Account? Get(string userName);
     }
 }

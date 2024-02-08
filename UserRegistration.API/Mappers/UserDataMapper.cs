@@ -49,7 +49,7 @@ namespace UserRegistration.API.Mappers
             return entities.Select(x => Map(x)).ToList();
         }
 
-        public UserData Map(UserDataRequestDTO dto)
+        public UserData Map(CreateUserDataRequestDTO dto)
         {
             return new UserData
             {

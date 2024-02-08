@@ -5,6 +5,9 @@ namespace UserRegistration.API.Validators
 {
     public class LastNameValidatorAttribute : ValidationAttribute
     {
+        private const int MinLength = 3;
+        private const int MaxLength = 36;
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (value == null)
@@ -15,17 +18,21 @@ namespace UserRegistration.API.Validators
 
             string lastName = value.ToString();
 
+            if (lastName.Length < MinLength || lastName.Length > MaxLength)
+            {
+                // Last name length is not within the allowed range
+                return new ValidationResult($"Last name must be between {MinLength} and {MaxLength} characters long.");
+            }
+
             // Define regular expression pattern for last name validation
-            // Assuming the last name should contain only letters and may include spaces
-            string lastNamePattern = @"^[A-Za-z\s]+$";
+            // Allowing letters (A-Z, a-z), spaces, and periods
+            string lastNamePattern = @"^[A-Za-z\s.]+$";
 
             if (!Regex.IsMatch(lastName, lastNamePattern))
             {
                 // Last name contains invalid characters
-                return new ValidationResult("Last name can only contain letters (A-Z, a-z) and spaces.");
+                return new ValidationResult("Last name can only contain letters (A-Z, a-z), spaces, and periods.");
             }
-
-            // Additional validation logic can be added here if needed
 
             // Last name is valid
             return ValidationResult.Success;

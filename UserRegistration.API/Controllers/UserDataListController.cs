@@ -35,13 +35,20 @@ namespace UserRegistration.API.Controllers
         }
 
         /// <summary>
-        /// Gets user data list item for the user
+        /// Get User Date For User
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">User Data ID</param>
+        /// <response code="200">User Data</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserDataListResultDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
         public IActionResult Get(int id)
         {
@@ -60,15 +67,22 @@ namespace UserRegistration.API.Controllers
         /// Creates User Data Item
         /// </summary>
         /// <param name="req">User Data To Create</param>
-        /// <returns>Created User Data ID</returns>
+        /// <response code="201">User ID</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
-        public IActionResult Post(UserDataRequestDTO req)
+        public IActionResult Post(CreateUserDataRequestDTO req)
         {
-            _logger.LogInformation($"Creating user data list for user {_userId} with Title {req.FirstName}");
+            _logger.LogInformation($"Creating user data for user {_userId} with Title {req.FirstName}");
             var entity = _mapper.Map(req);
             _repository.Add(entity);
 
@@ -76,193 +90,216 @@ namespace UserRegistration.API.Controllers
         }
 
         /// <summary>
-        /// Updates a user data list item first name for the user
+        /// Updates User Data First Name
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="req"></param>
-        /// <returns></returns>
+        /// <param name="id">User Data ID</param>
+        /// <param name="req">User Data Item FirstName</param>
+        /// <response code="204">No Content</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpPut("firstname/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         public IActionResult Put(int id, UpdateFirstNameRequestDTO req)
         {
-            _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
+            _logger.LogInformation($"Updating user data item with id {id} for user {_userId}");
             var entity = _repository.Get(id);
             if (entity == null)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
+                _logger.LogInformation($"User data item with id {id} for user {_userId} not found");
                 return NotFound();
             }
             if (entity.AccountId != _userId)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
+                _logger.LogInformation($"User data item with id {id} for user {_userId} is forbidden");
                 return Forbid();
             }
-
-
             _mapper.ProjectTo(req, entity);
             _repository.Update(entity);
             return NoContent();
         }
+
         /// <summary>
-        /// Updates a user data list item last name for the user
+        /// Updates User Data Last Name
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="req"></param>
-        /// <returns></returns>
+        /// <param name="id">User Data ID</param>
+        /// <param name="req">User Data Item Last Name</param>
+        /// <response code="204">No Content</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpPut("lastname/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         public IActionResult Put(int id, UpdateLastNameRequestDTO req)
         {
-            _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
+            _logger.LogInformation($"Updating user data item with id {id} for user {_userId}");
             var entity = _repository.Get(id);
             if (entity == null)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
+                _logger.LogInformation($"User data item with id {id} for user {_userId} not found");
                 return NotFound();
             }
             if (entity.AccountId != _userId)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
+                _logger.LogInformation($"User data item with id {id} for user {_userId} is forbidden");
                 return Forbid();
             }
-
-
             _mapper.ProjectTo(req, entity);
             _repository.Update(entity);
             return NoContent();
         }
+
         /// <summary>
-        /// Updates a user data list item last name for the user
+        /// Updates User Data Email
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="req"></param>
-        /// <returns></returns>
-        [HttpPut("emailaddress/{id}")]
+        /// <param name="id">User Data ID</param>
+        /// <param name="req">User Data Item Email</param>
+        /// <response code="204">No Content</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
+        [HttpPut("email/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         public IActionResult Put(int id, UpdateEmailAddresRequestDTO req)
         {
-            _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
+            _logger.LogInformation($"Updating user data item with id {id} for user {_userId}");
             var entity = _repository.Get(id);
             if (entity == null)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
+                _logger.LogInformation($"User data item with id {id} for user {_userId} not found");
                 return NotFound();
             }
             if (entity.AccountId != _userId)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
+                _logger.LogInformation($"User data item with id {id} for user {_userId} is forbidden");
                 return Forbid();
             }
-
-
             _mapper.ProjectTo(req, entity);
             _repository.Update(entity);
             return NoContent();
         }
+
         /// <summary>
-        /// Updates a user data list item last name for the user
+        /// Updates User Data Social Security Code
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="req"></param>
-        /// <returns></returns>
+        /// <param name="id">User Data ID</param>
+        /// <param name="req">User Data Item Social Security Code</param>
+        /// <response code="204">No Content</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpPut("socialsecuritycode/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         public IActionResult Put(int id, UpdateSocSecCodeRequestDTO req)
         {
-            _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
+            _logger.LogInformation($"Updating user data item with id {id} for user {_userId}");
             var entity = _repository.Get(id);
             if (entity == null)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
+                _logger.LogInformation($"User data item with id {id} for user {_userId} not found");
                 return NotFound();
             }
             if (entity.AccountId != _userId)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
+                _logger.LogInformation($"User data item with id {id} for user {_userId} is forbidden");
                 return Forbid();
             }
-
-
             _mapper.ProjectTo(req, entity);
             _repository.Update(entity);
             return NoContent();
         }
+
         /// <summary>
-        /// Updates a user data list item last name for the user
+        /// Updates User Data Phone Number
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="req"></param>
-        /// <returns></returns>
+        /// <param name="id">User Data ID</param>
+        /// <param name="req">User Data Item Phone Number</param>
+        /// <response code="204">No Content</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpPut("phonenumber/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         public IActionResult Put(int id, UpdatePhoneNumberRequestDTO req)
         {
-            _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
+            _logger.LogInformation($"Updating user data item with id {id} for user {_userId}");
             var entity = _repository.Get(id);
             if (entity == null)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
+                _logger.LogInformation($"User data item with id {id} for user {_userId} not found");
                 return NotFound();
             }
             if (entity.AccountId != _userId)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
+                _logger.LogInformation($"User data item with id {id} for user {_userId} is forbidden");
                 return Forbid();
             }
-
-
             _mapper.ProjectTo(req, entity);
             _repository.Update(entity);
             return NoContent();
         }
 
         /// <summary>
-        /// Deletes user data list item for the user
+        /// Deletes User Data
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">UserData ID</param>
+        /// <response code="204">No Content</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
         public IActionResult Delete(int id)
         {
-            _logger.LogInformation($"Deleting todo with id {id} for user {_userId}");
+            _logger.LogInformation($"Deleting userdata with id {id} for user {_userId}");
             var entity = _repository.Get(id);
             if (entity == null)
             {
-                _logger.LogInformation($"Todo with id {id} for user {_userId} not found");
+                _logger.LogInformation($"Userdata with id {id} for user {_userId} not found");
                 return NotFound();
             }
             if (entity.AccountId != _userId)
             {
-                _logger.LogInformation($"Todo with id {id} for user {_userId} is forbidden");
+                _logger.LogInformation($"Userdata with id {id} for user {_userId} is forbidden");
                 return Forbid();
             }
             _repository.Delete(entity);

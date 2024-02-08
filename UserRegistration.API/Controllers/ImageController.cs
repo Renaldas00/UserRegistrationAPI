@@ -37,14 +37,18 @@ namespace UserRegistration.API.Controllers
         }
 
         /// <summary>
-        /// get an image for a user
+        /// Get Image For User
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Id To Search For</param>
+        /// <response code="200">Image Content</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Image.Png)]
         public IActionResult Get(int id)
         {
@@ -64,40 +68,53 @@ namespace UserRegistration.API.Controllers
         }
 
         /// <summary>
-        /// creates an image for a user
+        /// Upload Image For User
         /// </summary>
-        /// <param name="req"></param>
-        /// <returns></returns>
+        /// <param name="req">Image And Its Data</param>
+        /// <response code="200">Image Id</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpPost]
-        [Route("/api/Todo/{todoItemId}/[controller]")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("/api/userdata/{userDataItemId}/[controller]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
-        public IActionResult Post([FromRoute] int todoItemId, [FromForm] UploadImageRequestDTO req)
+        public IActionResult Post([FromRoute] int userDataItemId, [FromForm] UploadImageRequestDTO req)
         {
             _logger.LogInformation($"Creating image for user {_userId}");
-            var todoEntity = _todoRepository.Get(todoItemId);
+            var todoEntity = _todoRepository.Get(userDataItemId);
             if (todoEntity == null)
             {
-                _logger.LogInformation($"Todo with id {todoItemId} for user {_userId} not found");
-                return NotFound("Todo item not found");
+                _logger.LogInformation($"UserData with id {userDataItemId} for user {_userId} not found");
+                return NotFound("UserData item not found");
             }
             if (todoEntity.AccountId != _userId)
             {
-                _logger.LogInformation($"Todo with id {todoItemId} for user {_userId} is forbidden");
+                _logger.LogInformation($"UserData with id {userDataItemId} for user {_userId} is forbidden");
                 return Forbid();
             }
 
-            var image = _mapper.Map(req, todoItemId,200,200);
+            var image = _mapper.Map(req, userDataItemId, 200,200);
             _imageRepository.Add(image);
 
             return Created(nameof(Get), new { id = image.Id });
         }
-
+        /// <summary>
+        /// Deletes User Image
+        /// </summary>
+        /// <param name="id">Image ID</param>
+        /// <response code="204">No Content</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Delete(int id)
         {
             _logger.LogInformation($"Deleting image {id} for user {_userId}");
@@ -117,41 +134,56 @@ namespace UserRegistration.API.Controllers
         }
 
         /// <summary>
-        /// Updates a user data list item first name for the user
+        /// Update User Image
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="req"></param>
-        /// <returns></returns>
+        /// <param name="id">ID To Search For</param>
+        /// <param name="req">Image Data</param>
+        /// <response code="204">No Content</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult Put(int id, [FromForm] UpdateImageRequestDTO req)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Put(int id, [FromForm] UpdateImageRequestDTO req)
 
         {
-            _logger.LogInformation($"Updating user data list item with id {id} for user {_userId}");
+            _logger.LogInformation($"Updating user image {id} for user {_userId}");
             var entity = _imageRepository.Get(id);
             if (entity == null)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} not found");
+                _logger.LogInformation($"Updating user image {id} for user {_userId} not found");
                 return NotFound();
             }
             if (entity.UserDataItem.AccountId != _userId)
             {
-                _logger.LogInformation($"User data list item with id {id} for user {_userId} is forbidden");
+                _logger.LogInformation($"Updating user image {id} for user {_userId} is forbidden");
                 return Forbid();
             }
-
-
             _mapper.ProjectTo(req, entity);
             _imageRepository.Update(entity);
             return NoContent();
         }
+
+        /// <summary>
+        /// Download Image
+        /// </summary>
+        /// <param name="id">Image ID</param>
+        /// <response code="200">Image Link</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
         [HttpGet("download/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Image.Png)]
         public IActionResult DownloadPhoto(int id)
         {

@@ -1,166 +1,94 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using UserRegistration.API.DTOS.Requests;
 using Xunit;
 
 namespace UserRegistration.APITests.DTOS
 {
+    /// <summary>
+    /// Tests for SignInRequestDTO validation.
+    /// </summary>
     public class SignInRequestDTOTests
     {
-        [Fact]
-        public void UserName_WhenNull_ShouldFailValidation()
+        /// <summary>
+        /// Data for validating username input.
+        /// </summary>
+        public static IEnumerable<object[]> UserNameValidationData =>
+            new List<object[]>
+            {
+            new object[] { null, false }, // required validation for the username input testing
+            new object[] { "ab", false }, // value just below minimum boundary
+            new object[] { "abc", true }, // value on minimum boundary
+            new object[] { "abcd", true }, // value just above minimum boundary
+            new object[] { new string('a', 3), true }, // value just below maximum boundary
+            new object[] { new string('a', 36), true }, // value on maximum boundary
+            new object[] { new string('a', 37), false }, // value just above maximum boundary 
+            new object[] { new string('a', 25), true }, // value inside middle of boundary
+            };
+
+        /// <summary>
+        /// Tests the validation of username input.
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(UserNameValidationData))]
+        public void UserName_ValidationTests(string userName, bool expectedIsValid)
         {
             // Arrange
-            var dto = new SignInDTO
+            var signUpRequestDTO = new SignUpRequestDTO
             {
-                UserName = null, //<-- this is testing value
+                UserName = userName,
                 Password = "P@$$w0rd",
             };
-            var validationContext = new ValidationContext(dto);
+            var validationContext = new ValidationContext(signUpRequestDTO);
             var validationResults = new List<ValidationResult>();
 
             // Act
-            var result = Validator.TryValidateObject(dto, validationContext, validationResults, true);
+            var result = Validator.TryValidateObject(signUpRequestDTO, validationContext, validationResults, true);
 
             // Assert
-            Assert.False(result);
+            Assert.Equal(expectedIsValid, result);
         }
 
-        [Fact]
-        public void UserName_WhenLength2_ShouldFailValidation()
+        /// <summary>
+        /// Data for validating password input.
+        /// </summary>
+        public static IEnumerable<object[]> PasswordValidationData =>
+            new List<object[]>
+            {
+            new object[] { null, false }, // required validation for the password input testing
+            new object[] { "A1!", false }, // value just below minimum boundary
+            new object[] { "A1!d", true }, // value on minimum boundary
+            new object[] { "A1!de", true }, // value just above minimum boundary
+            new object[] { "A1!" + new string('a', 3), true }, // value just below maximum boundary
+            new object[] { "A1!" + new string('a', 21), true }, // value on maximum boundary
+            new object[] { "A1!" + new string('a', 25), false }, // value just above maximum 
+            new object[] { "A1!" + new string('a', 12), true }, // value inside middle of boundary
+            new object[] { "password", false }, // upper case requirement for the password input testing
+            new object[] { "PASSWORD", false }, // lower case requirement for the password input testing
+            new object[] { "Password", false }, // digit requirement for the password input testing
+            new object[] { "Password1`", true }, // special character requirement for the password input testing
+            };
+
+        /// <summary>
+        /// Tests the validation of password input.
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(PasswordValidationData))]
+        public void Password_ValidationTests(string password, bool expectedIsValid)
         {
             // Arrange
-            var dto = new SignInDTO
+            var signUpRequestDTO = new SignUpRequestDTO
             {
-                UserName = "ab", //<-- this is testing value
-                Password = "P@$$w0rd",
+                UserName = "Abcd",
+                Password = password,
             };
-            var validationContext = new ValidationContext(dto);
+            var validationContext = new ValidationContext(signUpRequestDTO);
             var validationResults = new List<ValidationResult>();
 
             // Act
-            var result = Validator.TryValidateObject(dto, validationContext, validationResults, true);
+            var result = Validator.TryValidateObject(signUpRequestDTO, validationContext, validationResults, true);
 
             // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public void UserName_WhenLength3_ShouldPassValidation()
-        {
-            // Arrange
-            var dto = new SignInDTO
-            {
-                UserName = "abc", //<-- this is testing value
-                Password = "P@$$w0rd",
-            };
-            var validationContext = new ValidationContext(dto);
-            var validationResults = new List<ValidationResult>();
-
-            // Act
-            var result = Validator.TryValidateObject(dto, validationContext, validationResults, true);
-
-            // Assert
-            Assert.True(result);
-        }
-
-        [Fact]
-        public void UserName_WhenLength36_ShouldPassValidation()
-        {
-            // Arrange
-            var dto = new SignInDTO
-            {
-                UserName = new string('a', 36), //<-- this is testing value
-                Password = "P@$$w0rd",
-            };
-            var validationContext = new ValidationContext(dto);
-            var validationResults = new List<ValidationResult>();
-
-            // Act
-            var result = Validator.TryValidateObject(dto, validationContext, validationResults, true);
-
-            // Assert
-            Assert.True(result);
-        }
-
-        [Fact]
-        public void UserName_WhenLength51_ShouldFailValidation()
-        {
-            // Arrange
-            var dto = new SignInDTO
-            {
-                UserName = new string('a', 51), //<-- this is testing value
-                Password = "P@$$w0rd",
-            };
-            var validationContext = new ValidationContext(dto);
-            var validationResults = new List<ValidationResult>();
-
-            // Act
-            var result = Validator.TryValidateObject(dto, validationContext, validationResults, true);
-
-            // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public void Password_WhenNull_ShouldFailValidation()
-        {
-            // Arrange
-            var dto = new SignInDTO
-            {
-                UserName = "abcde",
-                Password = null, //<-- this is testing value
-            };
-            var validationContext = new ValidationContext(dto);
-            var validationResults = new List<ValidationResult>();
-
-            // Act
-            var result = Validator.TryValidateObject(dto, validationContext, validationResults, true);
-
-            // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public void Password_WhenValid_ShouldPassValidation()
-        {
-            // Arrange
-            var dto = new SignInDTO
-            {
-                UserName = "abcde",
-                Password = "P@$$w0rd", //<-- this is testing value
-            };
-            var validationContext = new ValidationContext(dto);
-            var validationResults = new List<ValidationResult>();
-
-            // Act
-            var result = Validator.TryValidateObject(dto, validationContext, validationResults, true);
-
-            // Assert
-            Assert.True(result);
-        }
-
-        [Fact]
-        public void Password_WhenInvalid_ShouldFailValidation()
-        {
-            // Arrange
-            var dto = new SignInDTO
-            {
-                UserName = "abcde",
-                Password = "p", //<-- this is testing value
-            };
-            var validationContext = new ValidationContext(dto);
-            var validationResults = new List<ValidationResult>();
-
-            // Act
-            var result = Validator.TryValidateObject(dto, validationContext, validationResults, true);
-
-            // Assert
-            Assert.False(result);
+            Assert.Equal(expectedIsValid, result);
         }
     }
 }

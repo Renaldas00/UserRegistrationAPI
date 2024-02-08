@@ -32,7 +32,7 @@ namespace UserRegistration.API.Mappers
             return entities.Select(x => Map(x)).ToList();
         }
 
-        public Location Map(LocationItemRequestDTO dto, int userDataId)
+        public Location Map(CreateLocationItemRequestDTO dto, int userDataId)
         {
             return new Location
             {

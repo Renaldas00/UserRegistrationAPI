@@ -7,7 +7,6 @@ namespace UserRegistration.API.DTOS.Requests
         [Required]
         [EmailAddress]
         public string EmailAdress { get; set; }
-
         public DateTime UpdatedAt { get; internal set; }
     }
 }
