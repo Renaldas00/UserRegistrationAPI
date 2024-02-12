@@ -8,6 +8,6 @@ namespace UserRegistration.API.DTOS.Requests
         [Required]
         [CountryValidator]
         public string Country { get; set; }
-        public DateTime UpdatedAt { get; internal set; }
+        
     }
 }

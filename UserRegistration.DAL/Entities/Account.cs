@@ -16,6 +16,5 @@ namespace UserRegistration.DAL.Entities
         public string Role { get; set; } = "User";
         public UserData UserData { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }

@@ -8,6 +8,5 @@ namespace UserRegistration.API.DTOS.Requests
         [Required]
         [CityValidator]
         public string City { get; set; }
-        public DateTime UpdatedAt { get; internal set; }
     }
 }

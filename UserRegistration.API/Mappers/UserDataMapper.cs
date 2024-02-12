@@ -18,6 +18,7 @@ namespace UserRegistration.API.Mappers
         {
             var result = new UserDataListResultDTO
             {
+                Id = entity.Id,
                 FirstName = entity.FirstName,
                 LastName = entity.LastName,
                 SocialSecurityCode = entity.SocialSecurityCode,
@@ -29,6 +30,9 @@ namespace UserRegistration.API.Mappers
             if (entity.Image != null)
             {
                 result.Image = entity.Image.Content;
+                result.ImageListId = entity.Image.Id;
+                result.ImageName = entity.Image.ImageName;
+
             }
 
             if (entity.Location != null)
@@ -38,6 +42,7 @@ namespace UserRegistration.API.Mappers
                 result.Street = entity.Location.Street;
                 result.HouseNumber = entity.Location.HouseNumber;
                 result.ApartmentNumber = entity.Location.ApartmentNumber;
+                result.LocationListId = entity.Location.Id;
 
             }
 
@@ -61,38 +66,38 @@ namespace UserRegistration.API.Mappers
                 PhoneNumber = dto.PhoneNumber,
                 AccountId = accountId,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                
             };
         }
 
         public void ProjectTo(UpdateFirstNameRequestDTO from, UserData to)
         {
             to.FirstName = from.FirstName!;
-            to.UpdatedAt = DateTime.UtcNow;
+            
         }
 
         public void ProjectTo(UpdateLastNameRequestDTO from, UserData to)
         {
             to.LastName = from.LastName!;
-            to.UpdatedAt = DateTime.UtcNow;
+            
         }
 
         public void ProjectTo(UpdateEmailAddresRequestDTO from, UserData to)
         {
             to.EmailAddres = from.EmailAdress!;
-            to.UpdatedAt = DateTime.UtcNow;
+            
         }
 
         public void ProjectTo(UpdateSocSecCodeRequestDTO from, UserData to)
         {
             to.SocialSecurityCode = from.SocialSecurityCode!;
-            to.UpdatedAt = DateTime.UtcNow;
+            
         }
 
         public void ProjectTo(UpdatePhoneNumberRequestDTO from, UserData to)
         {
             to.PhoneNumber = from.PhoneNumber!;
-            to.UpdatedAt = DateTime.UtcNow;
+            
         }
     }
 }

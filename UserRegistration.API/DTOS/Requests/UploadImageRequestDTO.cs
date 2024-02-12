@@ -5,10 +5,6 @@ namespace UserRegistration.API.DTOS.Requests
 {
     public class UploadImageRequestDTO
     {
-        [Required]
-        [StringLength(100)]
-        public string ImageName { get; set; } = null!;
-
         [MaxFileSize(5 * 1024 * 1024)]
         [AllowedExtensions([".png"])]
         public IFormFile Image { get; set; } = null!;

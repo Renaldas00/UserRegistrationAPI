@@ -7,6 +7,6 @@ namespace UserRegistration.API.DTOS.Requests
         [Required]
         [Phone]
         public string PhoneNumber { get; set; }
-        public DateTime UpdatedAt { get; internal set; }
+        
     }
 }

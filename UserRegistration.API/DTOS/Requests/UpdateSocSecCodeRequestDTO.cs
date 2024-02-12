@@ -8,6 +8,6 @@ namespace UserRegistration.API.DTOS.Requests
         [Required]
         [SocialSecurityCodeValidator]
         public string SocialSecurityCode {  get; set; }
-        public DateTime UpdatedAt {  get; internal set; }
+        
     }
 }

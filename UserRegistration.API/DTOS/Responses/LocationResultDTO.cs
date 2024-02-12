@@ -12,6 +12,6 @@ namespace UserRegistration.API.DTOS.Responses
         public string? ApartmentNumber { get; set; }
         public UserData UserLocation { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+       
     }
 }

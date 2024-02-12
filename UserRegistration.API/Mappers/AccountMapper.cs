@@ -22,7 +22,7 @@ namespace UserRegistration.API.Mappers
                 PasswordSalt = passwordSalt,
                 Role = dto.Role!,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                
             };
         }
     }

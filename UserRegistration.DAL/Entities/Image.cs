@@ -19,6 +19,5 @@ namespace UserRegistration.DAL.Entities
         public int UserDataItemId { get; set; }
         public UserData UserDataItem { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }

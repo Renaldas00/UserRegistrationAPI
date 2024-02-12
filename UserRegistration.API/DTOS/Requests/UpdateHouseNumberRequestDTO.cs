@@ -8,6 +8,6 @@ namespace UserRegistration.API.DTOS.Requests
         [Required]
         [HouseNumberValidator]
         public string HouseNumber { get; set; }
-        public DateTime UpdatedAt { get; internal set; }
+        
     }
 }

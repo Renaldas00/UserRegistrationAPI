@@ -8,6 +8,6 @@ namespace UserRegistration.API.DTOS.Requests
         [Required]
         [StreetValidator]
         public string Street { get; set; }
-        public DateTime UpdatedAt { get; internal set; }
+        
     }
 }

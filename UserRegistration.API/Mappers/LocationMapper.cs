@@ -42,7 +42,7 @@ namespace UserRegistration.API.Mappers
                 HouseNumber = dto.HouseNumber,
                 ApartmentNumber = dto.ApartmentNumber,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                
                 UserLocationId = userDataId
             };
         }
@@ -50,31 +50,31 @@ namespace UserRegistration.API.Mappers
         public void ProjectTo(UpdateCountryRequestDTO from, Location to)
         {
             to.Country = from.Country;
-            to.UpdatedAt = DateTime.UtcNow;
+            
         }
 
         public void ProjectTo(UpdateCityRequestDTO from, Location to)
         {
             to.City = from.City;
-            to.UpdatedAt = DateTime.UtcNow;
+            
         }
 
         public void ProjectTo(UpdateStreetRequestDTO from, Location to)
         {
             to.Street = from.Street;
-            to.UpdatedAt = DateTime.UtcNow;
+            
         }
 
         public void ProjectTo(UpdateHouseNumberRequestDTO from, Location to)
         {
             to.HouseNumber = from.HouseNumber;
-            to.UpdatedAt = DateTime.UtcNow;
+            
         }
 
         public void ProjectTo(UpdateApartmentNumberRequestDTO from, Location to)
         {
             to.ApartmentNumber = from.ApartmentNumber;
-            to.UpdatedAt = DateTime.UtcNow;
+            
         }
     }
 }

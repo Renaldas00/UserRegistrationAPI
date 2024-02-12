@@ -19,6 +19,5 @@ namespace UserRegistration.API.DTOS.Requests
         [ApartmentNumberValidator]
         public string? ApartmentNumber { get; set; }
         public DateTime CreatedAt { get; internal set; }
-        public DateTime? UpdatedAt { get; internal set; }
     }
 }

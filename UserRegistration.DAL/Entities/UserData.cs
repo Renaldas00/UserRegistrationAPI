@@ -26,6 +26,5 @@ namespace UserRegistration.DAL.Entities
         public Guid AccountId { get; set; }
         public Account Account { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }

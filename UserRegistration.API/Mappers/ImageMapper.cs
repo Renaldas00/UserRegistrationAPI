@@ -38,12 +38,12 @@ namespace UserRegistration.API.Mappers
 
                     return new DAL.Entities.Image
                     {
-                        ImageName = dto.ImageName!,
+                        ImageName = dto.Image.FileName!,
                         UserDataItemId = imageItemId,
                         Content = resizedStream.ToArray(),
                         Size = (int)resizedStream.Length,
                         CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
+                        
                     };
                 }
             }
@@ -60,11 +60,10 @@ namespace UserRegistration.API.Mappers
                     // Use a specific image format to encode the resized image
                     var encoder = new PngEncoder(); // You can use other formats like JpegEncoder if needed
                     resizedImage.Save(resizedStream, encoder);
-
-                    to.ImageName = from.ImageName!;
+                    to.ImageName = from.Image.FileName;
                     to.Content = resizedStream.ToArray();
                     to.Size = (int)resizedStream.Length;
-                    to.UpdatedAt = DateTime.UtcNow;
+                    
                 }
             }
         }

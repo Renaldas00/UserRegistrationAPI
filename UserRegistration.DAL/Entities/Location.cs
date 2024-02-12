@@ -17,6 +17,5 @@ namespace UserRegistration.DAL.Entities
         public int UserLocationId { get; set; }
         public UserData UserLocation { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }

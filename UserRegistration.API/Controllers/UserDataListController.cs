@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System.Net.Mime;
 using System.Security.Claims;
 using UserRegistration.API.DTOS.Requests;
 using UserRegistration.API.DTOS.Responses;
 using UserRegistration.API.Mappers.Interfaces;
+using UserRegistration.DAL.Repositories;
 using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.API.Controllers
@@ -33,9 +36,40 @@ namespace UserRegistration.API.Controllers
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
         }
+        /// <summary>
+        /// Get User Data Id Based On UUID
+        /// </summary>
+        /// <response code="200">User Data Id</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">System error</response>
+        [HttpGet]
+        [ProducesResponseType(typeof(UserDataListResultDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Produces(MediaTypeNames.Application.Json)]
+        public IActionResult GetAll()
+        {
+            _logger.LogInformation($"Getting user data for user {_userId}");
+            //var entity = _repository.GetAll().Where(userData => userData.AccountId == _userId).ToList();
+            var entity = _repository.GetAll(userData => userData.Image, userData => userData.Location)
+                 .Where(userData => userData.AccountId == _userId)
+                 .ToList();
+            if (entity == null)
+            {
+                _logger.LogInformation($"User data for user {_userId} not found");
+                return NotFound();
+            }
+                      
+            var dto = _mapper.Map(entity);
+            return Ok(dto);
+        }
 
         /// <summary>
-        /// Get User Date For User
+        /// Get User Data For User
         /// </summary>
         /// <param name="id">User Data ID</param>
         /// <response code="200">User Data</response>
@@ -58,6 +92,11 @@ namespace UserRegistration.API.Controllers
             {
                 _logger.LogInformation($"User data with id {id} for user {_userId} not found");
                 return NotFound();
+            }
+            if (entity.AccountId != _userId)
+            {
+                _logger.LogInformation($"User data item with id {id} for user {_userId} is forbidden");
+                return Forbid();
             }
             var dto = _mapper.Map(entity);
             return Ok(dto);
@@ -173,7 +212,7 @@ namespace UserRegistration.API.Controllers
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">System error</response>
-        [HttpPut("email/{id}")]
+        [HttpPut("emailAdress/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

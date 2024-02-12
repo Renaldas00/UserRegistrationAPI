@@ -8,6 +8,6 @@ namespace UserRegistration.API.DTOS.Requests
         [Required]
         [FirstNameValidator]
         public string FirstName {  get; set; }
-        public DateTime UpdatedAt { get; internal set; }
+        
     }
 }
