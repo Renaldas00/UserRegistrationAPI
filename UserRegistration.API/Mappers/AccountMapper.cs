@@ -21,8 +21,7 @@ namespace UserRegistration.API.Mappers
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Role = dto.Role!,
-                CreatedAt = DateTime.UtcNow,
-                
+                CreatedAt = DateTime.UtcNow, 
             };
         }
     }

@@ -32,7 +32,6 @@ namespace UserRegistration.API.Mappers
                 result.Image = entity.Image.Content;
                 result.ImageListId = entity.Image.Id;
                 result.ImageName = entity.Image.ImageName;
-
             }
 
             if (entity.Location != null)
@@ -43,7 +42,6 @@ namespace UserRegistration.API.Mappers
                 result.HouseNumber = entity.Location.HouseNumber;
                 result.ApartmentNumber = entity.Location.ApartmentNumber;
                 result.LocationListId = entity.Location.Id;
-
             }
 
             return result;
@@ -65,39 +63,33 @@ namespace UserRegistration.API.Mappers
                 EmailAddres = dto.EmailAddres,
                 PhoneNumber = dto.PhoneNumber,
                 AccountId = accountId,
-                CreatedAt = DateTime.UtcNow,
-                
+                CreatedAt = DateTime.UtcNow,     
             };
         }
 
         public void ProjectTo(UpdateFirstNameRequestDTO from, UserData to)
         {
-            to.FirstName = from.FirstName!;
-            
+            to.FirstName = from.FirstName!;          
         }
 
         public void ProjectTo(UpdateLastNameRequestDTO from, UserData to)
         {
-            to.LastName = from.LastName!;
-            
+            to.LastName = from.LastName!;           
         }
 
         public void ProjectTo(UpdateEmailAddresRequestDTO from, UserData to)
         {
-            to.EmailAddres = from.EmailAdress!;
-            
+            to.EmailAddres = from.EmailAdress!;            
         }
 
         public void ProjectTo(UpdateSocSecCodeRequestDTO from, UserData to)
         {
             to.SocialSecurityCode = from.SocialSecurityCode!;
-            
         }
 
         public void ProjectTo(UpdatePhoneNumberRequestDTO from, UserData to)
         {
             to.PhoneNumber = from.PhoneNumber!;
-            
         }
     }
 }

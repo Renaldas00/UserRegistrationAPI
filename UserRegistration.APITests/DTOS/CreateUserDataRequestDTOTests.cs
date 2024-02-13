@@ -132,26 +132,26 @@ namespace UserRegistration.APITests.DTOS
         /// Data for validating phone number input.
         /// </summary>
         public static IEnumerable<object[]> PhoneNumberValidationData =>
-        new List<object[]>
-        {
-            new object[] { null, false }, // Required validation for the phone number input testing
-            new object[] { "123", true }, // Minimum length boundary
-            new object[] { "1234567890123456789012345678901234567890", true }, // Maximum length boundary
-            new object[] { "1234", true }, // Just above the minimum length boundary
-            new object[] { "12345abc", false }, // Invalid characters
-            new object[] { "123-456-7890", true }, // Valid with hyphens
-            new object[] { "123.456.7890", true }, // Valid with dots
-            new object[] { "123(456)7890", true }, // Valid with parentheses
-            new object[] { "123 456 7890", true }, // Valid with whitespace
-            new object[] { "123 456 7890 x1234", true }, // Valid with extension abbreviation 'x'
-            new object[] { "123 456 7890 EXT1234", true }, // Valid with extension abbreviation 'EXT'
-            new object[] { "123 456 7890 EXT.1234", true }, // Valid with extension abbreviation 'EXT.'
-            new object[] { "123 456 7890 ext.1a34", false }, // Invalid extension with non-digits
-            new object[] { "123 456 7890 ext.123", true }, // Valid extension with 3 digits
-            new object[] { "123 456 7890 ext.1", true }, // Valid extension with 1 digit
-            new object[] { "869999999", true }, // Lithuanian Number
-            new object[] { "+37069999999", true }, // Lithuanian Number
-        };
+            new List<object[]>
+            {
+                new object[] { null, false }, // Required validation for the phone number input testing
+                new object[] { "123", true }, // Minimum length boundary
+                new object[] { "1234567890123456789012345678901234567890", true }, // Maximum length boundary
+                new object[] { "1234", true }, // Just above the minimum length boundary
+                new object[] { "12345abc", false }, // Invalid characters
+                new object[] { "123-456-7890", true }, // Valid with hyphens
+                new object[] { "123.456.7890", true }, // Valid with dots
+                new object[] { "123(456)7890", true }, // Valid with parentheses
+                new object[] { "123 456 7890", true }, // Valid with whitespace
+                new object[] { "123 456 7890 x1234", true }, // Valid with extension abbreviation 'x'
+                new object[] { "123 456 7890 EXT1234", true }, // Valid with extension abbreviation 'EXT'
+                new object[] { "123 456 7890 EXT.1234", true }, // Valid with extension abbreviation 'EXT.'
+                new object[] { "123 456 7890 ext.1a34", false }, // Invalid extension with non-digits
+                new object[] { "123 456 7890 ext.123", true }, // Valid extension with 3 digits
+                new object[] { "123 456 7890 ext.1", true }, // Valid extension with 1 digit
+                new object[] { "869999999", true }, // Lithuanian Number
+                new object[] { "+37069999999", true }, // Lithuanian Number
+            };
 
         /// <summary>
         /// Tests the validation of phone number input.

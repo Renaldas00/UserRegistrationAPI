@@ -42,13 +42,12 @@ namespace UserRegistration.API.Mappers
                         UserDataItemId = imageItemId,
                         Content = resizedStream.ToArray(),
                         Size = (int)resizedStream.Length,
-                        CreatedAt = DateTime.UtcNow,
-                        
+                        CreatedAt = DateTime.UtcNow,       
                     };
                 }
             }
         }
-            public void ProjectTo(UpdateImageRequestDTO from, DAL.Entities.Image to, int targetWidth, int targetHeight)
+        public void ProjectTo(UpdateImageRequestDTO from, DAL.Entities.Image to, int targetWidth, int targetHeight)
         {
             using var stream = from.Image.OpenReadStream();
             using var image = SixLabors.ImageSharp.Image.Load(stream);
@@ -63,7 +62,6 @@ namespace UserRegistration.API.Mappers
                     to.ImageName = from.Image.FileName;
                     to.Content = resizedStream.ToArray();
                     to.Size = (int)resizedStream.Length;
-                    
                 }
             }
         }
