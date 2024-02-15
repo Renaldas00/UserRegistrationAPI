@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using System.Net.Mime;
 using System.Security.Claims;
 using UserRegistration.API.DTOS.Requests;
 using UserRegistration.API.DTOS.Responses;
 using UserRegistration.API.Mappers.Interfaces;
-using UserRegistration.DAL.Repositories;
 using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.API.Controllers
@@ -19,12 +16,14 @@ namespace UserRegistration.API.Controllers
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class UserDataController : ControllerBase
     {
+        // Intercace instances
         private readonly ILogger<UserDataController> _logger;
         private readonly IUserDataRepository _repository;
         private readonly IUserDataMapper _mapper;
         private readonly Guid _userId;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        // Constructor with dependency injection to initialize controller properties.
         public UserDataController(ILogger<UserDataController> logger,
             IUserDataRepository repository,
             IHttpContextAccessor httpContextAccessor,
@@ -53,18 +52,21 @@ namespace UserRegistration.API.Controllers
         [Produces(MediaTypeNames.Application.Json)]
         public IActionResult GetAll()
         {
+            // Log information about retrieving user data for the current user.
             _logger.LogInformation($"Getting user data for user {_userId}");
-            //var entity = _repository.GetAll().Where(userData => userData.AccountId == _userId).ToList();
+            // Retrieve user data for the current user from the repository.
             var entity = _repository.GetAll(userData => userData.Image, userData => userData.Location)
                  .Where(userData => userData.AccountId == _userId)
                  .ToList();
+
             if (entity == null)
             {
                 _logger.LogInformation($"User data for user {_userId} not found");
                 return NotFound();
             }
-                      
+            // Map the retrieved user data to DTOs.
             var dto = _mapper.Map(entity);
+            // Return the mapped DTOs in a 200 OK response.
             return Ok(dto);
         }
 
@@ -86,7 +88,9 @@ namespace UserRegistration.API.Controllers
         [Produces(MediaTypeNames.Application.Json)]
         public IActionResult Get(int id)
         {
+            // Log information about retrieving user data for the current user by item id.
             _logger.LogInformation($"Getting user data with id {id} for user {_userId}");
+            // Retrieve user data for the current user from the repository.
             var entity = _repository.Get(id);
             if (entity == null)
             {
@@ -98,7 +102,9 @@ namespace UserRegistration.API.Controllers
                 _logger.LogInformation($"User data item with id {id} for user {_userId} is forbidden");
                 return Forbid();
             }
+            // Map the retrieved user data to a DTO.
             var dto = _mapper.Map(entity);
+            // Return the mapped DTO in a 200 OK response.
             return Ok(dto);
         }
 
@@ -122,9 +128,11 @@ namespace UserRegistration.API.Controllers
         public IActionResult Post(CreateUserDataRequestDTO req)
         {
             _logger.LogInformation($"Creating user data for user {_userId} with Title {req.FirstName}");
+            // Map the request data to a UserData entity.
             var entity = _mapper.Map(req);
+            // Add the mapped entity to the repository.
             _repository.Add(entity);
-
+            // Return the created entity in a 201 Created response.
             return Ok(entity);
         }
 
@@ -160,6 +168,7 @@ namespace UserRegistration.API.Controllers
                 _logger.LogInformation($"User data item with id {id} for user {_userId} is forbidden");
                 return Forbid();
             }
+            // Update the first name of the user data item based on the request data.
             _mapper.ProjectTo(req, entity);
             _repository.Update(entity);
             return NoContent();

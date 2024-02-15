@@ -4,6 +4,7 @@ using UserRegistration.DAL.Repositories.Interfaces;
 
 namespace UserRegistration.DAL.Repositories
 {
+    // This generic implementation of the IRepository interface
     public abstract class Repository<T> : IRepository<T> where T : class
     {
         protected readonly AppDbContext _appDbContext;

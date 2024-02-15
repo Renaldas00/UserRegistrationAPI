@@ -16,6 +16,8 @@ namespace UserRegistration.API.Mappers
 
         public UserDataListResultDTO Map(UserData entity)
         {
+            // Creates a new instance of UserDataListResultDTO and initializes its properties.
+
             var result = new UserDataListResultDTO
             {
                 Id = entity.Id,
@@ -44,11 +46,14 @@ namespace UserRegistration.API.Mappers
                 result.LocationListId = entity.Location.Id;
             }
 
+            // Returns the mapped UserDataListResultDTO.
             return result;
         }
-
+        // Method to map a collection of UserData entities to a list of UserDataListResultDTOs.
+        // For single responsibility principle
         public List<UserDataListResultDTO> Map(IEnumerable<UserData> entities)
         {
+            // Uses LINQ's Select method to map each UserData entity to a UserDataListResultDTO, and then converts the result to a list.
             return entities.Select(x => Map(x)).ToList();
         }
 
@@ -67,9 +72,11 @@ namespace UserRegistration.API.Mappers
             };
         }
 
+        // Method to project properties from an UpdateFirstNameRequestDTO to an existing UserData entity.
         public void ProjectTo(UpdateFirstNameRequestDTO from, UserData to)
         {
-            to.FirstName = from.FirstName!;          
+            // Updates the FirstName property of the UserData entity with the value from the UpdateFirstNameRequestDTO.
+            to.FirstName = from.FirstName!; // The ! indicates that the property is assumed to be non-null.
         }
 
         public void ProjectTo(UpdateLastNameRequestDTO from, UserData to)

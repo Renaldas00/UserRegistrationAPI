@@ -8,6 +8,7 @@ namespace UserRegistration.DAL
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }
+        // DbSet properties representing database tables for different entity types.
 
         public DbSet<Account> Account { get; set; }
         public DbSet<UserData> UserData { get; set; }

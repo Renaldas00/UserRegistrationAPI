@@ -32,8 +32,7 @@ namespace UserRegistration.API.Mappers
             {
                 using (var resizedStream = new MemoryStream())
                 {
-                    // Use a specific image format to encode the resized image
-                    var encoder = new PngEncoder(); // You can use other formats like JpegEncoder if needed
+                    var encoder = new PngEncoder();
                     resizedImage.Save(resizedStream, encoder);
 
                     return new DAL.Entities.Image
@@ -56,8 +55,7 @@ namespace UserRegistration.API.Mappers
             {
                 using (var resizedStream = new MemoryStream())
                 {
-                    // Use a specific image format to encode the resized image
-                    var encoder = new PngEncoder(); // You can use other formats like JpegEncoder if needed
+                    var encoder = new PngEncoder();
                     resizedImage.Save(resizedStream, encoder);
                     to.ImageName = from.Image.FileName;
                     to.Content = resizedStream.ToArray();
